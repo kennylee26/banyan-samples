@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cn.kennylee.banyan.samples</groupId>
+        <artifactId>banyan-samples-mq</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>banyan-samples-mq-payload-types</artifactId>
+    <name>banyan-samples-mq-payload-types</name>
+    <description>演示 payload 支持的各种类型：基础类型、POJO、List、Map、Map&lt;Bean, List&lt;Bean&gt;&gt;</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.kennylee.banyan</groupId>
+            <artifactId>banyan-mq-producer</artifactId>
+            <version>${banyan.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.kennylee.banyan</groupId>
+            <artifactId>banyan-mq-consumer</artifactId>
+            <version>${banyan.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.kennylee.banyan</groupId>
+            <artifactId>banyan-mq-rocketmq-apache</artifactId>
+            <version>${banyan.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <version>${rocketmq-spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

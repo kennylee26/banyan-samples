@@ -1,0 +1,21 @@
+server:
+  port: ${SERVER_PORT:0}
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+
+# banyan-mq：单后端项目也建议显式声明，便于阅读和后续扩展
+banyan:
+  mq:
+    enabled: true
+    producer:
+      enabled: true
+    instances:
+      kafka:
+        type: kafka

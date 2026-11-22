@@ -1,0 +1,25 @@
+server:
+  port: ${SERVER_PORT:0}
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:banyan-mq;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+rocketmq:
+  name-server: ${ROCKETMQ_NAME_SERVER:localhost:9876}
+  producer:
+    group: banyan-sample-rocketmq-producer
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
+
+# banyan-mq：单后端项目也建议显式声明实例
+banyan:
+  mq:
+    enabled: true
+    producer:
+      enabled: true
+    instances:
+      rocketmq:
+        type: rocketmq

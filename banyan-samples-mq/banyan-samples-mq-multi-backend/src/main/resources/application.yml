@@ -1,0 +1,24 @@
+server:
+  port: ${SERVER_PORT:0}
+
+# 两个 Kafka 集群：member 与 payment
+samples:
+  kafka:
+    member:
+      bootstrap-servers: ${MEMBER_KAFKA_SERVERS:localhost:9092}
+    payment:
+      bootstrap-servers: ${PAYMENT_KAFKA_SERVERS:localhost:9094}
+
+rocketmq:
+  name-server: ${ROCKETMQ_NAME_SERVER:localhost:9876}
+  producer:
+    group: banyan-sample-multi
+
+banyan:
+  mq:
+    enabled: true
+    producer:
+      enabled: true
+    # 关闭 Kafka 后端的自动装配：两个 Kafka 集群由 KafkaClustersConfig 手动创建
+    kafka:
+      enabled: false

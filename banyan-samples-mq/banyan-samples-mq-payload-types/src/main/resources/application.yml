@@ -1,0 +1,19 @@
+server:
+  port: ${SERVER_PORT:0}
+
+rocketmq:
+  name-server: ${ROCKETMQ_NAME_SERVER:localhost:9876}
+  producer:
+    group: banyan-sample-payload
+
+banyan:
+  mq:
+    enabled: true
+    producer:
+      enabled: true
+    consumer:
+      enabled: true
+      suffix-enabled: false
+    instances:
+      rocketmq:
+        type: rocketmq

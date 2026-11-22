@@ -1,0 +1,23 @@
+server:
+  port: ${SERVER_PORT:0}
+
+rocketmq:
+  name-server: ${ROCKETMQ_NAME_SERVER:localhost:9876}
+  producer:
+    group: banyan-sample-rocketmq-consumer
+  consumer:
+    group: banyan-sample-rocketmq-consumer
+    topic: banyan-sample-rocketmq-consumer
+    consume-thread-max: 20
+    consume-thread-min: 5
+
+# banyan-mq：消费者组的实际值由注解上的 group 或自动生成，suffix 关闭以复用固定组名
+banyan:
+  mq:
+    enabled: true
+    consumer:
+      enabled: true
+      suffix-enabled: false
+    instances:
+      rocketmq:
+        type: rocketmq

@@ -1,0 +1,23 @@
+server:
+  port: ${SERVER_PORT:0}
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: banyan-sample-kafka-consumer
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+
+# banyan-mq：suffix-enabled=false 与注解上的 suffixEnabled=false 保持一致
+banyan:
+  mq:
+    enabled: true
+    consumer:
+      enabled: true
+      suffix-enabled: false
+    instances:
+      kafka:
+        type: kafka
