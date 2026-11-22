@@ -1,6 +1,14 @@
 server:
   port: ${SERVER_PORT:0}
 
+# @MqConsumer 注解属性引用这些占位符，演示配置与代码解耦
+samples:
+  mq:
+    instance: rocketmq
+    topic: banyan-sample-rocketmq-consumer
+    tag: paid
+    group: banyan-sample-rocketmq-consumer
+
 rocketmq:
   name-server: ${ROCKETMQ_NAME_SERVER:localhost:9876}
   producer:

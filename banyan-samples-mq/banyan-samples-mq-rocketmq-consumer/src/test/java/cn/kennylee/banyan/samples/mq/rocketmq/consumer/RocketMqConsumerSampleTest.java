@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * RocketMQ 消费者示例测试：原生发送，HTTP 查询消费结果。
@@ -43,11 +44,24 @@ class RocketMqConsumerSampleTest {
     @Test
     void consumesWithMqConsumer() {
         // when
-        template.syncSend(RocketMqSampleConsumer.TOPIC + ":paid", "{\"id\":5}");
+        template.syncSend(RocketMqSampleConsumer.TOPIC + ":" + RocketMqSampleConsumer.TAG,
+                "{\"id\":5}");
 
         // then
-        await().atMost(40, TimeUnit.SECONDS).until(() -> !messages().isEmpty());
-        assertEquals(List.of("{\"id\":5}"), messages());
+        await().atMost(40, TimeUnit.SECONDS).until(() -> messages().contains("{\"id\":5}"));
+        assertTrue(messages().contains("{\"id\":5}"));
+    }
+
+    @Test
+    void resolvesPlaceholderAttributesAndFiltersTag() {
+        // when
+        template.syncSend(RocketMqSampleConsumer.TOPIC + ":other", "{\"id\":99}");
+        template.syncSend(RocketMqSampleConsumer.TOPIC + ":" + RocketMqSampleConsumer.TAG,
+                "{\"id\":6}");
+
+        // then
+        await().atMost(40, TimeUnit.SECONDS).until(() -> messages().contains("{\"id\":6}"));
+        assertFalse(messages().contains("{\"id\":99}"));
     }
 
     private List<String> messages() {

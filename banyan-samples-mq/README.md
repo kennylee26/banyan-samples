@@ -25,6 +25,7 @@
 | 自定义编解码 | `kafka-producer`、`payload-types` |
 | 消费上下文（messageId / retryTimes 等） | `kafka-consumer`、`rocketmq-consumer` |
 | `boolean` 控制重试 | `kafka-consumer`、`rocketmq-consumer` |
+| 注解属性用 Spring 占位符 | `rocketmq-consumer` |
 | 同一应用多后端 | `multi-backend` |
 | payload 类型矩阵 | `payload-types` |
 
@@ -93,6 +94,7 @@ SERVER_PORT=18766 ROCKETMQ_NAME_SERVER=127.0.0.1:9876 \
 | `rocketmq-producer` | `RocketMqProducerSampleTest` | `sendsPlainAndDelayedMessages` | 普通发送 + 延迟发送 |
 | | | `sendsKeyedPayloadAndAfterCommitMessages` | key/headers、payload、事务提交后发送 |
 | `rocketmq-consumer` | `RocketMqConsumerSampleTest` | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
+| | | `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效 |
 | `multi-backend` | `MultiBackendRoutingTest` | `registersTwoLogicalInstances` | 两个逻辑实例的映射与路由 |
 | | `MultiKafkaConsumerTest` | `registersConsumersToDifferentInstances` | 两个 Kafka 消费者分别注册到不同实例 |
 | `payload-types` | `PayloadTypesSampleTest` | `supportsAllPayloadTypes` | String / Integer / Boolean / POJO / List / Map / Map<Bean,List<Bean>> |

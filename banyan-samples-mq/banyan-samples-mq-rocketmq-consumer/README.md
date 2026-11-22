@@ -1,6 +1,6 @@
 # banyan-samples-mq-rocketmq-consumer
 
-演示用 `@MqConsumer` 消费 RocketMQ 消息，按 tag 过滤。
+演示用 `@MqConsumer` 消费 RocketMQ 消息，按 tag 过滤；注解的 `instance` / `topic` / `tag` / `group` 全部写成 Spring 占位符，从 `application.yml` 取值。
 
 ## 启动
 
@@ -17,6 +17,27 @@ SERVER_PORT=18764 ROCKETMQ_NAME_SERVER=127.0.0.1:9876 mvn spring-boot:run
 | `SERVER_PORT` | 应用端口 | `0`（随机） |
 | `ROCKETMQ_NAME_SERVER` | RocketMQ nameserver 地址 | `localhost:9876` |
 
+注解占位符的取值在 `application.yml`：
+
+```yaml
+samples:
+  mq:
+    instance: rocketmq
+    topic: banyan-sample-rocketmq-consumer
+    tag: paid
+    group: banyan-sample-rocketmq-consumer
+```
+
+```java
+@MqConsumer(
+        instance = "${samples.mq.instance:rocketmq}",
+        topic = "${samples.mq.topic:banyan-sample-rocketmq-consumer}",
+        tag = "${samples.mq.tag:paid}",
+        group = "${samples.mq.group:banyan-sample-rocketmq-consumer}")
+```
+
+`concurrency` / `maxRetryTimes` 是数值属性，注解上不能写占位符。
+
 ## 使用
 
 向 `banyan-sample-rocketmq-consumer` 的 `paid` tag 发送消息后，查询已消费内容：
@@ -30,6 +51,7 @@ curl http://localhost:18764/messages
 | 方法 | 场景 |
 |---|---|
 | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
+| `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效：topic 对上、tag 过滤仍生效 |
 
 ## 测试
 

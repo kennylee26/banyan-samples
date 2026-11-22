@@ -19,6 +19,9 @@ public class RocketMqSampleConsumer {
     /** 消费 topic。 */
     static final String TOPIC = "banyan-sample-rocketmq-consumer";
 
+    /** 消费 tag。 */
+    static final String TAG = "paid";
+
     private final MessageStore store;
 
     /**
@@ -31,12 +34,18 @@ public class RocketMqSampleConsumer {
     }
 
     /**
-     * 消费入口：返回 true 表示成功，返回 false 触发 RocketMQ 重试。
+     * 消费入口：注解属性全部使用 Spring 占位符，返回 true 表示成功，返回 false 触发 RocketMQ 重试。
      *
      * @param message 消息
      * @return true 表示消费成功
      */
-    @MqConsumer(instance = "rocketmq", topic = TOPIC, tag = "paid", groupSuffixEnabled = false, tagSuffixEnabled = false)
+    @MqConsumer(
+            instance = "${samples.mq.instance:rocketmq}",
+            topic = "${samples.mq.topic:" + TOPIC + "}",
+            tag = "${samples.mq.tag:" + TAG + "}",
+            group = "${samples.mq.group:banyan-sample-rocketmq-consumer}",
+            groupSuffixEnabled = false,
+            tagSuffixEnabled = false)
     public boolean onPaid(MqMessage message, MqConsumeContext context) {
         log.debug("收到消息: topic={}, tag={}, messageId={}, retryTimes={}",
                 context.getTopic(), context.getTag(), context.getMessageId(),
