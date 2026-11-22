@@ -46,19 +46,21 @@
 
 ### 多后端
 
-`multi-backend` 在 `application.yml` 里声明两个逻辑实例：
+`multi-backend` 有两个 Kafka 集群，`banyan.mq.instances.<name>.type` 只能区分后端类型、区分不了同类型的不同连接，所以在 `config` 包里用 Java 显式创建三个实例：
+
+- `member-kafka`、`payment-kafka`：各自一套 `KafkaTemplate` / `ConsumerFactory` / `KafkaMqBackend`
+- `member-rocketmq`：RocketMQ 自动装配提供的后端
+
+`application.yml` 里只关闭 Kafka 的自动装配（`banyan.mq.kafka.enabled=false`），不声明 `instances`：
 
 ```yaml
 banyan:
   mq:
-    instances:
-      member-kafka:
-        type: kafka
-      member-rocketmq:
-        type: rocketmq
+    kafka:
+      enabled: false
 ```
 
-两个 `MqProducer` 分别绑定 `member-kafka` / `member-rocketmq`，业务接口按需选择。测试不连真实 broker，只验证实例映射与路由。
+三个 `MqProducer` 分别绑定上述实例，业务接口按需选择。测试不连真实 broker，只验证实例映射与路由。
 
 ## 运行单个示例
 
@@ -115,5 +117,5 @@ mvn -pl banyan-samples-mq/banyan-samples-mq-kafka-producer -am clean test
 所有示例依赖发布到本地仓库的 `cn.kennylee.banyan:banyan-mq-*:0.1.0-SNAPSHOT`。修改 banyan-mq 后先执行：
 
 ```bash
-mvn -pl banyan-mq/banyan-mq-core,banyan-mq/banyan-mq-producer,banyan-mq/banyan-mq-consumer,banyan-mq/banyan-mq-kafka-spring,banyan-mq/banyan-mq-rocketmq-apache install -DskipTests
+mvn -pl banyan-mq/banyan-mq-core,banyan-mq/banyan-mq-commons-spring,banyan-mq/banyan-mq-producer,banyan-mq/banyan-mq-consumer,banyan-mq/banyan-mq-kafka-spring,banyan-mq/banyan-mq-rocketmq-apache -am install -DskipTests
 ```

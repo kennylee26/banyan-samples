@@ -1,16 +1,34 @@
 # banyan-samples
 
-banyan 的使用示例与集成测试，独立于库本身，不发布。
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-## 模块
+Runnable examples and integration tests for [banyan](https://github.com/kennylee26/banyan), a set of reusable Spring Boot infrastructure libraries. This repository is the usage showcase for banyan — it is not published and is not itself a library.
 
-| 模块 | 说明 |
+## Modules
+
+| Module | What it shows |
 |---|---|
-| [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` 示例：生产者 / 消费者 × Kafka / RocketMQ |
+| [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` in action: producers and consumers on Kafka and RocketMQ, multi-backend routing, payload types |
 
-## 约定
+## Conventions
 
-- 每个子模块是可独立启动的 Spring Boot 应用，示例代码在 `src/main/java`，测试在 `src/test/java`。
-- 端口默认 `0`（随机），需要固定时用 `SERVER_PORT`，示例只用偏门端口（18761–18766）。
-- 连接地址通过 `application.yml` 的 `${环境变量:默认值}` 占位符配置，不在代码或测试里写死。
-- 测试优先使用内嵌基础设施：Kafka 用 `EmbeddedKafka`，RocketMQ 用 Testcontainers。
+- Every module is a standalone Spring Boot app: examples under `src/main/java`, tests under `src/test/java`.
+- `server.port` defaults to `0` (random). Use `SERVER_PORT` to pin it; examples only pick unusual ports (18761–18766).
+- Broker addresses come from `${ENV_VAR:default}` placeholders in `application.yml`; no local address is hard-coded.
+- Tests prefer embedded infrastructure: `EmbeddedKafka` for Kafka, Testcontainers for RocketMQ. No external broker is required.
+
+## Build
+
+Samples depend on `cn.kennylee.banyan:banyan-mq-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
+
+```bash
+mvn -pl banyan-mq/banyan-mq-core,banyan-mq/banyan-mq-commons-spring,banyan-mq/banyan-mq-producer,banyan-mq/banyan-mq-consumer,banyan-mq/banyan-mq-kafka-spring,banyan-mq/banyan-mq-rocketmq-apache install -DskipTests
+```
+
+Then, in this repo:
+
+```bash
+mvn clean test
+```
+
+Each module README explains how to run the app on its own and indexes every test case.
