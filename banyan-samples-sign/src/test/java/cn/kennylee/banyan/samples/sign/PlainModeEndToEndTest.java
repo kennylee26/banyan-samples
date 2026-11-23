@@ -1,10 +1,11 @@
 package cn.kennylee.banyan.samples.sign;
 
 import cn.kennylee.banyan.openapi.sign.client.OpenApiRequestSigner;
-import cn.kennylee.banyan.openapi.sign.client.httpclient5.SigningHttpClients;
+import cn.kennylee.banyan.openapi.sign.client.httpclient5.SigningHttpRequests;
 import cn.kennylee.banyan.openapi.sign.client.resttemplate.SigningRestTemplates;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
@@ -45,9 +46,10 @@ class PlainModeEndToEndTest {
         // given
         HttpPost post = new HttpPost(baseUrl() + "/openapi/orders");
         post.setEntity(new StringEntity("{\"id\":4}", ContentType.APPLICATION_JSON));
+        SigningHttpRequests.sign(signer(), post);
 
         // when
-        try (CloseableHttpClient client = SigningHttpClients.builder(signer()).build();
+        try (CloseableHttpClient client = HttpClientBuilder.create().build();
              CloseableHttpResponse response = client.execute(post)) {
             // then
             assertEquals(200, response.getCode());
@@ -60,7 +62,8 @@ class PlainModeEndToEndTest {
     @Test
     void restTemplateSendsPlainBody() {
         // given
-        RestTemplate rest = SigningRestTemplates.create(signer());
+        RestTemplate rest = new RestTemplate();
+        SigningRestTemplates.attach(rest, signer());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

@@ -28,16 +28,18 @@ banyan:
 
 ## 客户端
 
-- `SigningHttpClients.builder(signer).build()`：Apache HttpClient 5
-- `SigningRestTemplates.create(signer)`：Spring RestTemplate
+- `SigningHttpRequests.sign(signer, post)`：Apache HttpClient 5，原地签名，client 自己构造
+- `SigningRestTemplates.attach(restTemplate, signer)`：Spring RestTemplate，挂到已有模板
+- `SigningJdkHttpRequests.sign(signer, request, body)`：JDK HttpClient，返回已签名请求
 
-两者都会自动加密 body、计算签名并写入五个 header。
+三者都会自动加密 body、计算签名并写入五个 header。想全自动时也可以用
+`SigningHttpClients.create(signer)` / `SigningRestTemplates.create(signer)`。
 
 ## 测试用例
 
 | 测试类 | 覆盖 |
 |---|---|
-| `SignClientEndToEndTest` | 两个客户端加密请求、空 body 请求、错误密钥 401 |
+| `SignClientEndToEndTest` | HttpClient5 / RestTemplate / JDK HttpClient 加密请求、空 body、错误密钥 401 |
 | `PlainModeEndToEndTest` | 提供方 `encrypted=false` + 客户端 `plainBody()` |
 | `CustomHeaderEndToEndTest` | 自定义五个 header 名 |
 | `ContextPathEndToEndTest` | `server.servlet.context-path=/api` + 客户端 `basePath("/api")` |

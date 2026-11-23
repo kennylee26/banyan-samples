@@ -1,12 +1,14 @@
 package cn.kennylee.banyan.samples.sign;
 
 import cn.kennylee.banyan.openapi.sign.client.OpenApiRequestSigner;
-import cn.kennylee.banyan.openapi.sign.client.httpclient5.SigningHttpClients;
+import cn.kennylee.banyan.openapi.sign.client.httpclient5.SigningHttpRequests;
+import cn.kennylee.banyan.openapi.sign.client.jdkhttp.SigningJdkHttpRequests;
 import cn.kennylee.banyan.openapi.sign.client.resttemplate.SigningRestTemplates;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
@@ -21,6 +23,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,15 +47,16 @@ class SignClientEndToEndTest {
     @LocalServerPort
     private int port;
 
-    /** HttpClient5 加密请求。 */
+    /** HttpClient5：原地签名后用自己的 client 发送。 */
     @Test
     void httpClient5SendsEncryptedRequest() throws Exception {
         // given
         HttpPost post = new HttpPost(baseUrl() + "/openapi/orders");
         post.setEntity(new StringEntity("{\"id\":1}", ContentType.APPLICATION_JSON));
+        SigningHttpRequests.sign(signer(), post);
 
         // when
-        try (CloseableHttpClient client = SigningHttpClients.builder(signer()).build();
+        try (CloseableHttpClient client = HttpClientBuilder.create().build();
              CloseableHttpResponse response = client.execute(post)) {
             // then
             assertEquals(200, response.getCode());
@@ -58,11 +65,12 @@ class SignClientEndToEndTest {
         }
     }
 
-    /** RestTemplate 加密请求。 */
+    /** RestTemplate：给已有模板挂拦截器。 */
     @Test
     void restTemplateSendsEncryptedRequest() {
         // given
-        RestTemplate rest = SigningRestTemplates.create(signer());
+        RestTemplate rest = new RestTemplate();
+        SigningRestTemplates.attach(rest, signer());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -80,9 +88,10 @@ class SignClientEndToEndTest {
     void httpClient5SignsEmptyBody() throws Exception {
         // given
         HttpGet get = new HttpGet(baseUrl() + "/openapi/orders/ping");
+        SigningHttpRequests.sign(signer(), get);
 
         // when
-        try (CloseableHttpClient client = SigningHttpClients.builder(signer()).build();
+        try (CloseableHttpClient client = HttpClientBuilder.create().build();
              CloseableHttpResponse response = client.execute(get)) {
             // then
             assertEquals(200, response.getCode());
@@ -91,11 +100,32 @@ class SignClientEndToEndTest {
         }
     }
 
+    /** JDK HttpClient：传入请求 + body，拿到已签名请求。 */
+    @Test
+    void jdkHttpClientSendsEncryptedRequest() throws Exception {
+        // given
+        HttpRequest unsigned = HttpRequest.newBuilder(
+                        URI.create(baseUrl() + "/openapi/orders"))
+                .method("POST", HttpRequest.BodyPublishers.noBody())
+                .header("Content-Type", "application/json")
+                .build();
+
+        // when
+        HttpRequest signed = SigningJdkHttpRequests.sign(signer(), unsigned, "{\"id\":10}");
+        HttpResponse<String> response = HttpClient.newHttpClient()
+                .send(signed, HttpResponse.BodyHandlers.ofString());
+
+        // then
+        assertEquals(200, response.statusCode());
+        assertEquals("{\"id\":10}", response.body());
+    }
+
     /** RestTemplate 能签名无 body 请求。 */
     @Test
     void restTemplateSignsEmptyBody() {
         // given
-        RestTemplate rest = SigningRestTemplates.create(signer());
+        RestTemplate rest = new RestTemplate();
+        SigningRestTemplates.attach(rest, signer());
 
         // when
         ResponseEntity<String> response = rest.getForEntity(
@@ -116,9 +146,10 @@ class SignClientEndToEndTest {
                 .build();
         HttpPost post = new HttpPost(baseUrl() + "/openapi/orders");
         post.setEntity(new StringEntity("{\"id\":8}", ContentType.APPLICATION_JSON));
+        SigningHttpRequests.sign(wrong, post);
 
         // when
-        try (CloseableHttpClient client = SigningHttpClients.builder(wrong).build();
+        try (CloseableHttpClient client = HttpClientBuilder.create().build();
              CloseableHttpResponse response = client.execute(post)) {
             // then
             assertEquals(401, response.getCode());
@@ -133,7 +164,8 @@ class SignClientEndToEndTest {
                 .keyId("app1")
                 .secret("wrong-secret")
                 .build();
-        RestTemplate rest = SigningRestTemplates.create(wrong);
+        RestTemplate rest = new RestTemplate();
+        SigningRestTemplates.attach(rest, wrong);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

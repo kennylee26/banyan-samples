@@ -39,7 +39,8 @@ class ContextPathEndToEndTest {
                 .secret(SECRET)
                 .basePath("/api")
                 .build();
-        RestTemplate rest = SigningRestTemplates.create(signer);
+        RestTemplate rest = new RestTemplate();
+        SigningRestTemplates.attach(rest, signer);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
