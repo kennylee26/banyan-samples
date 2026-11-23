@@ -10,17 +10,18 @@
 |---|---|
 | [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` 示例：Kafka / RocketMQ 的生产者与消费者、多后端路由、payload 类型 |
 | [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` 示例：内嵌签名提供方 + HttpClient5 / RestTemplate 客户端 |
+| [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` 示例：header 转发、日志与 traceId 透传 |
 
 ## 约定
 
 - 每个模块是可独立启动的 Spring Boot 应用：示例代码在 `src/main/java`，测试在 `src/test/java`。
-- `server.port` 默认 `0`（随机）；需要固定时用 `SERVER_PORT`，示例只用偏门端口（18761–18766）。
+- 多数模块 `server.port` 默认 `0`（随机）；需要稳定客户端地址的模块使用固定偏门端口（18761–18768），可用 `SERVER_PORT` 覆盖。
 - 连接地址通过 `application.yml` 的 `${环境变量:默认值}` 占位符配置，不在代码或测试里写死。
 - 测试优先使用内嵌基础设施：Kafka 用 `EmbeddedKafka`，RocketMQ 用 Testcontainers，不依赖外部 broker。
 
 ## 构建
 
-示例依赖 `cn.kennylee.banyan:banyan-mq-*` 与 `banyan-sign-*:0.1.0-SNAPSHOT`，先到 [banyan](https://github.com/kennylee26/banyan) 仓安装库：
+示例依赖 `cn.kennylee.banyan:banyan-mq-*` 与 `banyan-sign-*` / `banyan-spring-*:0.1.0-SNAPSHOT`，先到 [banyan](https://github.com/kennylee26/banyan) 仓安装库：
 
 ```bash
 # sign 示例（在 banyan 仓根目录执行全量 install）

@@ -1,0 +1,23 @@
+server:
+  port: ${SERVER_PORT:18768}
+
+banyan:
+  spring:
+    feign:
+      forward-headers:
+        enabled: false
+      request-log:
+        enabled: true
+      response-log:
+        enabled: true
+      logging:
+        mask-sensitive: true
+  trace:
+    header-name: X-Trace-Id
+    feign:
+      enabled: true
+      response-enabled: true
+
+logging:
+  level:
+    cn.kennylee.banyan.spring.feign: DEBUG

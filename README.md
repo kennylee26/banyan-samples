@@ -10,17 +10,18 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 |---|---|
 | [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` in action: producers and consumers on Kafka and RocketMQ, multi-backend routing, payload types |
 | [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` in action: signed provider plus HttpClient5 and RestTemplate clients |
+| [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` in action: header forwarding, logging and traceId propagation |
 
 ## Conventions
 
 - Every module is a standalone Spring Boot app: examples under `src/main/java`, tests under `src/test/java`.
-- `server.port` defaults to `0` (random). Use `SERVER_PORT` to pin it; examples only pick unusual ports (18761–18766).
+- Most modules default `server.port` to `0` (random); modules that need a stable client URL use a fixed unusual port (18761–18768), overridable with `SERVER_PORT`.
 - Broker addresses come from `${ENV_VAR:default}` placeholders in `application.yml`; no local address is hard-coded.
 - Tests prefer embedded infrastructure: `EmbeddedKafka` for Kafka, Testcontainers for RocketMQ. No external broker is required.
 
 ## Build
 
-Samples depend on `cn.kennylee.banyan:banyan-mq-*` and `banyan-sign-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
+Samples depend on `cn.kennylee.banyan:banyan-mq-*` and `banyan-sign-*` / `banyan-spring-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
 
 ```bash
 # sign samples (run full install from the banyan repo root)

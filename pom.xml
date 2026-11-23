@@ -22,11 +22,13 @@
     <modules>
         <module>banyan-samples-mq</module>
         <module>banyan-samples-sign</module>
+        <module>banyan-samples-feign</module>
     </modules>
 
     <properties>
         <java.version>17</java.version>
         <banyan.version>0.1.0-SNAPSHOT</banyan.version>
+        <spring-cloud-openfeign.version>4.2.0</spring-cloud-openfeign.version>
         <rocketmq-spring.version>2.2.3</rocketmq-spring.version>
     </properties>
 </project>
