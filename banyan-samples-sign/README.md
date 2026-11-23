@@ -53,5 +53,5 @@ mvn -pl banyan-samples-sign test
 先确保 `banyan-sign` 模块已安装到本地仓库：
 
 ```bash
-mvn -f ../../banyan-starter/banyan-sign/pom.xml install -DskipTests
+(cd ../../banyan-starter && mvn clean install -DskipTests)
 ```

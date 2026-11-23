@@ -23,8 +23,8 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 Samples depend on `cn.kennylee.banyan:banyan-mq-*` and `banyan-sign-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
 
 ```bash
-# sign samples
-mvn -f banyan-sign/pom.xml install -DskipTests
+# sign samples (run full install from the banyan repo root)
+mvn clean install -DskipTests
 
 # mq samples
 mvn -pl banyan-mq/banyan-mq-core,banyan-mq/banyan-mq-commons-spring,banyan-mq/banyan-mq-producer,banyan-mq/banyan-mq-consumer,banyan-mq/banyan-mq-kafka-spring,banyan-mq/banyan-mq-rocketmq-apache install -DskipTests

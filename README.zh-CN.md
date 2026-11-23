@@ -23,8 +23,8 @@
 示例依赖 `cn.kennylee.banyan:banyan-mq-*` 与 `banyan-sign-*:0.1.0-SNAPSHOT`，先到 [banyan](https://github.com/kennylee26/banyan) 仓安装库：
 
 ```bash
-# sign 示例
-mvn -f banyan-sign/pom.xml install -DskipTests
+# sign 示例（在 banyan 仓根目录执行全量 install）
+mvn clean install -DskipTests
 
 # mq 示例
 mvn -pl banyan-mq/banyan-mq-core,banyan-mq/banyan-mq-commons-spring,banyan-mq/banyan-mq-producer,banyan-mq/banyan-mq-consumer,banyan-mq/banyan-mq-kafka-spring,banyan-mq/banyan-mq-rocketmq-apache install -DskipTests
