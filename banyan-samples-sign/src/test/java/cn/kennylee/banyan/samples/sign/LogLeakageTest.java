@@ -9,7 +9,6 @@ import cn.kennylee.banyan.openapi.sign.client.resttemplate.SigningRestTemplates;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,16 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 0.1.0
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class LogLeakageTest {
-
-    /** 与 application.yml 一致的密钥。 */
-    private static final String SECRET = "secret-for-tests";
+class LogLeakageTest extends AbstractSignTest {
 
     /** 明文 body，用于断言不会出现在日志里。 */
     private static final String PLAINTEXT = "{\"id\":9}";
-
-    @LocalServerPort
-    private int port;
 
     /** TRACE 日志不泄漏敏感内容。 */
     @Test
@@ -72,8 +65,4 @@ class LogLeakageTest {
         assertTrue(logs.matches("(?s).*X-Banyan-Sign=[0-9a-f]{8}\\.\\.\\..*"));
     }
 
-    /** 服务根地址。 */
-    private String baseUrl() {
-        return "http://localhost:" + port;
-    }
 }

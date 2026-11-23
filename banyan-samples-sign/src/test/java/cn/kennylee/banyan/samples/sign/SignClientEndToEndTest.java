@@ -13,7 +13,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -38,13 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @since 0.1.0
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class SignClientEndToEndTest {
-
-    /** 与 application.yml 一致的密钥。 */
-    static final String SECRET = "secret-for-tests";
-
-    @LocalServerPort
-    private int port;
+class SignClientEndToEndTest extends AbstractSignTest {
 
     /** HttpClient5：原地签名后用自己的 client 发送。 */
     @Test
@@ -174,13 +167,4 @@ class SignClientEndToEndTest {
         assertEquals(401, error.getStatusCode().value());
     }
 
-    /** 构造签名门面。 */
-    private OpenApiRequestSigner signer() {
-        return OpenApiRequestSigner.builder().keyId("app1").secret(SECRET).build();
-    }
-
-    /** 服务根地址。 */
-    private String baseUrl() {
-        return "http://localhost:" + port;
-    }
 }

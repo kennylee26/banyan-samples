@@ -4,7 +4,6 @@ import cn.kennylee.banyan.openapi.sign.client.OpenApiRequestSigner;
 import cn.kennylee.banyan.openapi.sign.client.SignHeaders;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,17 +26,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         "banyan.openapi-sign.headers.nonce=X-Acme-Nonce",
         "banyan.openapi-sign.headers.sign=X-Acme-Sign"
 })
-class CustomHeaderEndToEndTest {
-
-    /** 与 application.yml 一致的密钥。 */
-    private static final String SECRET = "secret-for-tests";
+class CustomHeaderEndToEndTest extends AbstractSignTest {
 
     /** 与提供方一致的自定义 header 名。 */
     private static final SignHeaders HEADERS = new SignHeaders(
             "X-Acme-Alg", "X-Acme-Key", "X-Acme-Time", "X-Acme-Nonce", "X-Acme-Sign");
-
-    @LocalServerPort
-    private int port;
 
     /** 自定义 header 名仍能通过验签。 */
     @Test
@@ -61,8 +54,4 @@ class CustomHeaderEndToEndTest {
         assertEquals("{\"id\":6}", response.getBody());
     }
 
-    /** 服务根地址。 */
-    private String baseUrl() {
-        return "http://localhost:" + port;
-    }
 }

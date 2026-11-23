@@ -43,6 +43,8 @@ banyan:
 | `PlainModeEndToEndTest` | 提供方 `encrypted=false` + 客户端 `plainBody()` |
 | `CustomHeaderEndToEndTest` | 自定义五个 header 名 |
 | `ContextPathEndToEndTest` | `server.servlet.context-path=/api` + 客户端 `basePath("/api")` |
+| `LogLeakageTest` | TRACE 全开时日志不泄漏 secret / 明文 / 完整签名 |
+| `ProtocolContractTest` | 客户端签名结果通过服务端 `ReplayGuard`，默认 header 名与服务端一致 |
 
 ## 测试
 

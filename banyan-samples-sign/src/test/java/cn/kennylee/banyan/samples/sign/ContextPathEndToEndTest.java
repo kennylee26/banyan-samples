@@ -3,7 +3,6 @@ package cn.kennylee.banyan.samples.sign;
 import cn.kennylee.banyan.openapi.sign.client.OpenApiRequestSigner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,13 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = "server.servlet.context-path=/api")
-class ContextPathEndToEndTest {
-
-    /** 与 application.yml 一致的密钥。 */
-    private static final String SECRET = "secret-for-tests";
-
-    @LocalServerPort
-    private int port;
+class ContextPathEndToEndTest extends AbstractSignTest {
 
     /** basePath 剥离后验签通过。 */
     @Test
@@ -51,8 +44,4 @@ class ContextPathEndToEndTest {
         assertEquals("{\"id\":7}", response.getBody());
     }
 
-    /** 服务根地址。 */
-    private String baseUrl() {
-        return "http://localhost:" + port;
-    }
 }

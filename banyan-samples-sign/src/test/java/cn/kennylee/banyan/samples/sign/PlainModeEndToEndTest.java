@@ -11,7 +11,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,13 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = "banyan.openapi-sign.encrypted=false")
-class PlainModeEndToEndTest {
-
-    /** 与 application.yml 一致的密钥。 */
-    private static final String SECRET = "secret-for-tests";
-
-    @LocalServerPort
-    private int port;
+class PlainModeEndToEndTest extends AbstractSignTest {
 
     /** HttpClient5 明文请求。 */
     @Test
@@ -74,14 +67,10 @@ class PlainModeEndToEndTest {
         assertEquals("{\"id\":5}", response.getBody());
     }
 
-    /** 构造明文模式签名门面。 */
-    private OpenApiRequestSigner signer() {
+    @Override
+    protected OpenApiRequestSigner signer() {
         return OpenApiRequestSigner.builder().keyId("app1").secret(SECRET)
                 .plainBody().build();
     }
 
-    /** 服务根地址。 */
-    private String baseUrl() {
-        return "http://localhost:" + port;
-    }
 }
