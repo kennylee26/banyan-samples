@@ -3,7 +3,6 @@ package cn.kennylee.banyan.samples.sign;
 import cn.kennylee.banyan.openapi.sign.client.OpenApiRequestSigner;
 import cn.kennylee.banyan.openapi.sign.client.httpclient5.SigningHttpRequests;
 import cn.kennylee.banyan.openapi.sign.client.jdkhttp.SigningJdkHttpRequests;
-import cn.kennylee.banyan.openapi.sign.client.resttemplate.SigningRestTemplates;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -69,8 +68,7 @@ class SignClientEndToEndTest {
     @Test
     void restTemplateSendsEncryptedRequest() {
         // given
-        RestTemplate rest = new RestTemplate();
-        SigningRestTemplates.attach(rest, signer());
+        RestTemplate rest = TestClients.restTemplate(signer());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -124,8 +122,7 @@ class SignClientEndToEndTest {
     @Test
     void restTemplateSignsEmptyBody() {
         // given
-        RestTemplate rest = new RestTemplate();
-        SigningRestTemplates.attach(rest, signer());
+        RestTemplate rest = TestClients.restTemplate(signer());
 
         // when
         ResponseEntity<String> response = rest.getForEntity(
@@ -164,8 +161,7 @@ class SignClientEndToEndTest {
                 .keyId("app1")
                 .secret("wrong-secret")
                 .build();
-        RestTemplate rest = new RestTemplate();
-        SigningRestTemplates.attach(rest, wrong);
+        RestTemplate rest = TestClients.restTemplate(wrong);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

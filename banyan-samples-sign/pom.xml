@@ -20,27 +20,27 @@
         <dependency>
             <groupId>cn.kennylee.banyan</groupId>
             <artifactId>banyan-sign-openapi</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${banyan.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.kennylee.banyan</groupId>
             <artifactId>banyan-sign-client</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${banyan.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.kennylee.banyan</groupId>
             <artifactId>banyan-sign-client-httpclient5</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${banyan.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.kennylee.banyan</groupId>
             <artifactId>banyan-sign-client-resttemplate</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${banyan.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.kennylee.banyan</groupId>
             <artifactId>banyan-sign-client-jdkhttp</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${banyan.version}</version>
         </dependency>
 
         <dependency>

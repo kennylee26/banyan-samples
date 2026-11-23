@@ -2,7 +2,6 @@ package cn.kennylee.banyan.samples.sign;
 
 import cn.kennylee.banyan.openapi.sign.client.OpenApiRequestSigner;
 import cn.kennylee.banyan.openapi.sign.client.httpclient5.SigningHttpRequests;
-import cn.kennylee.banyan.openapi.sign.client.resttemplate.SigningRestTemplates;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -62,8 +61,7 @@ class PlainModeEndToEndTest {
     @Test
     void restTemplateSendsPlainBody() {
         // given
-        RestTemplate rest = new RestTemplate();
-        SigningRestTemplates.attach(rest, signer());
+        RestTemplate rest = TestClients.restTemplate(signer());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

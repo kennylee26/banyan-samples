@@ -1,7 +1,6 @@
 package cn.kennylee.banyan.samples.sign;
 
 import cn.kennylee.banyan.openapi.sign.client.OpenApiRequestSigner;
-import cn.kennylee.banyan.openapi.sign.client.resttemplate.SigningRestTemplates;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -39,8 +38,7 @@ class ContextPathEndToEndTest {
                 .secret(SECRET)
                 .basePath("/api")
                 .build();
-        RestTemplate rest = new RestTemplate();
-        SigningRestTemplates.attach(rest, signer);
+        RestTemplate rest = TestClients.restTemplate(signer);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
