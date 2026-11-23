@@ -1,0 +1,7 @@
+server:
+  port: 0
+
+banyan:
+  openapi-sign:
+    keys:
+      app1: secret-for-tests

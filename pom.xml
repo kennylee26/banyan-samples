@@ -21,6 +21,7 @@
 
     <modules>
         <module>banyan-samples-mq</module>
+        <module>banyan-samples-sign</module>
     </modules>
 
     <properties>

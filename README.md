@@ -9,6 +9,7 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 | Module | What it shows |
 |---|---|
 | [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` in action: producers and consumers on Kafka and RocketMQ, multi-backend routing, payload types |
+| [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` in action: signed provider plus HttpClient5 and RestTemplate clients |
 
 ## Conventions
 
@@ -19,9 +20,13 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 
 ## Build
 
-Samples depend on `cn.kennylee.banyan:banyan-mq-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
+Samples depend on `cn.kennylee.banyan:banyan-mq-*` and `banyan-sign-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
 
 ```bash
+# sign samples
+mvn -f banyan-sign/pom.xml install -DskipTests
+
+# mq samples
 mvn -pl banyan-mq/banyan-mq-core,banyan-mq/banyan-mq-commons-spring,banyan-mq/banyan-mq-producer,banyan-mq/banyan-mq-consumer,banyan-mq/banyan-mq-kafka-spring,banyan-mq/banyan-mq-rocketmq-apache install -DskipTests
 ```
 

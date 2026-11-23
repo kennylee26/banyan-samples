@@ -9,6 +9,7 @@
 | 模块 | 说明 |
 |---|---|
 | [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` 示例：Kafka / RocketMQ 的生产者与消费者、多后端路由、payload 类型 |
+| [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` 示例：内嵌签名提供方 + HttpClient5 / RestTemplate 客户端 |
 
 ## 约定
 
@@ -19,9 +20,13 @@
 
 ## 构建
 
-示例依赖 `cn.kennylee.banyan:banyan-mq-*:0.1.0-SNAPSHOT`，先到 [banyan](https://github.com/kennylee26/banyan) 仓安装库：
+示例依赖 `cn.kennylee.banyan:banyan-mq-*` 与 `banyan-sign-*:0.1.0-SNAPSHOT`，先到 [banyan](https://github.com/kennylee26/banyan) 仓安装库：
 
 ```bash
+# sign 示例
+mvn -f banyan-sign/pom.xml install -DskipTests
+
+# mq 示例
 mvn -pl banyan-mq/banyan-mq-core,banyan-mq/banyan-mq-commons-spring,banyan-mq/banyan-mq-producer,banyan-mq/banyan-mq-consumer,banyan-mq/banyan-mq-kafka-spring,banyan-mq/banyan-mq-rocketmq-apache install -DskipTests
 ```
 
