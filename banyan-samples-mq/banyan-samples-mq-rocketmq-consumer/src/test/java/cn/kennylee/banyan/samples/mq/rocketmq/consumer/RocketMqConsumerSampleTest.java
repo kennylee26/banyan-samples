@@ -1,6 +1,8 @@
 package cn.kennylee.banyan.samples.mq.rocketmq.consumer;
 
+import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,6 +43,14 @@ class RocketMqConsumerSampleTest {
     @Autowired
     private RocketMQTemplate template;
 
+    @Autowired
+    private MessageStore store;
+
+    @AfterEach
+    void clearStore() {
+        store.clear();
+    }
+
     @Test
     void consumesWithMqConsumer() {
         // when
@@ -64,8 +74,24 @@ class RocketMqConsumerSampleTest {
         assertFalse(messages().contains("{\"id\":99}"));
     }
 
+    @Test
+    void capturesMessageIdFromConsumeContext() {
+        // when
+        SendResult sent = template.syncSend(
+                RocketMqSampleConsumer.TOPIC + ":" + RocketMqSampleConsumer.TAG, "{\"id\":7}");
+
+        // then
+        await().atMost(40, TimeUnit.SECONDS).until(() -> ids().contains(sent.getMsgId()));
+        assertTrue(ids().contains(sent.getMsgId()), "消费上下文 messageId 应等于发送结果的 msgId");
+    }
+
     private List<String> messages() {
         String[] body = rest.getForObject("/messages", String[].class);
         return body == null ? List.of() : List.of(body);
+    }
+
+    private List<String> ids() {
+        String[] ids = rest.getForObject("/messages/ids", String[].class);
+        return ids == null ? List.of() : List.of(ids);
     }
 }

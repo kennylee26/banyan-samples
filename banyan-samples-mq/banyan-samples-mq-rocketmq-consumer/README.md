@@ -46,12 +46,33 @@ samples:
 curl http://localhost:18764/messages
 ```
 
+已消费消息的 messageId：
+
+```bash
+curl http://localhost:18764/messages/ids
+```
+
+## 消费上下文
+
+`messageId` 从方法第二个参数 `MqConsumeContext` 取，值来自 RocketMQ 的 `MessageExt#getMsgId()`：
+
+```java
+@MqConsumer(instance = "${samples.mq.instance:rocketmq}",
+        topic = "${samples.mq.topic:banyan-sample-rocketmq-consumer}", ...)
+public boolean onPaid(MqMessage message, MqConsumeContext context) {
+    String messageId = context.getMessageId();
+    store.add(messageId, message.getBody());
+    return true;
+}
+```
+
 ## 测试用例
 
 | 方法 | 场景 |
 |---|---|
 | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
 | `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效：topic 对上、tag 过滤仍生效 |
+| `capturesMessageIdFromConsumeContext` | 从消费上下文取 messageId，校验非空 |
 
 ## 测试
 

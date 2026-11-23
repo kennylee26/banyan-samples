@@ -36,4 +36,14 @@ public class MessageController {
     public List<String> all() {
         return store.all();
     }
+
+    /**
+     * 全部已消费消息的 messageId，取自消费上下文。
+     *
+     * @return 消息 id 列表
+     */
+    @GetMapping("/ids")
+    public List<String> ids() {
+        return store.ids();
+    }
 }

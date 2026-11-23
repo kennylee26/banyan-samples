@@ -16,13 +16,43 @@ public class MessageStore {
 
     private final List<String> messages = new CopyOnWriteArrayList<>();
 
+    private final List<ConsumedPosition> positions = new CopyOnWriteArrayList<>();
+
     /**
-     * 追加一条消息。
+     * 追加一条消息及其定位信息。
      *
-     * @param message 消息体
+     * @param message  消息体
+     * @param position 定位信息
      */
-    public void add(String message) {
+    public void add(String message, ConsumedPosition position) {
         messages.add(message);
+        positions.add(position);
+    }
+
+    /**
+     * 全部已消费消息的 messageId。
+     *
+     * @return 只读快照
+     */
+    public List<String> ids() {
+        return positions.stream().map(ConsumedPosition::messageId).toList();
+    }
+
+    /**
+     * 全部已消费消息的定位信息。
+     *
+     * @return 只读快照
+     */
+    public List<ConsumedPosition> positions() {
+        return List.copyOf(positions);
+    }
+
+    /**
+     * 清空记录，供测试隔离。
+     */
+    public void clear() {
+        messages.clear();
+        positions.clear();
     }
 
     /**

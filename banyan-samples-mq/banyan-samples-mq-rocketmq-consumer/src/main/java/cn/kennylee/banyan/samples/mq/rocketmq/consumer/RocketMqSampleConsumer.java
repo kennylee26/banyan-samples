@@ -51,7 +51,7 @@ public class RocketMqSampleConsumer {
                 context.getTopic(), context.getTag(), context.getMessageId(),
                 context.getRetryTimes());
 
-        store.add(message.getBody());
+        store.add(context.getMessageId(), message.getBody());
         return true;
     }
 }

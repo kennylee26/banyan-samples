@@ -29,6 +29,20 @@
 | 同一应用多后端 | `multi-backend` |
 | payload 类型矩阵 | `payload-types` |
 
+### 消费上下文
+
+消费方法可以声明可选的第二个参数 `MqConsumeContext`，从里面取 `messageId`：
+
+- 框架统一命名为 `messageId`。Kafka 没有原生消息 id，这里是 `topic-partition-offset` 拼出的定位串；
+  RocketMQ 取 `MessageExt#getMsgId()`。
+- Kafka 的 `offset` 是分区内索引，不是全局 id。要读原始分区号与 offset，需把
+  `context.getNativeMessage()` 强转为 `ConsumerRecord`。
+
+`kafka-consumer` 与 `rocketmq-consumer` 把 `context.getMessageId()` 记录进 `MessageStore`，
+可用 `GET /messages/ids` 查看；各自的 `capturesMessageIdFromConsumeContext` 用例断言
+messageId 来自消费上下文。`kafka-consumer` 另有 `readsPartitionAndOffsetFromNativeMessage`
+演示分区号与 offset，结果可用 `GET /messages/positions` 查看。
+
 ### payload 类型矩阵
 
 `payload-types` 覆盖 7 种形态：
@@ -91,10 +105,13 @@ SERVER_PORT=18766 ROCKETMQ_NAME_SERVER=127.0.0.1:9876 \
 | | | `sendsKeyAndHeaders` | 指定 key 与 headers |
 | | | `encodesPayloadWithCustomCodec` | payload + 自定义编解码 |
 | `kafka-consumer` | `KafkaConsumerSampleTest` | `consumesWithMqConsumer` | 消费 + 上下文 + 业务 Service 调用 |
+| | | `capturesMessageIdFromConsumeContext` | 从消费上下文取 messageId，校验 `topic-partition-offset` 格式 |
+| | | `readsPartitionAndOffsetFromNativeMessage` | 强转 `ConsumerRecord`，取分区号与 offset 并与 messageId 对齐 |
 | `rocketmq-producer` | `RocketMqProducerSampleTest` | `sendsPlainAndDelayedMessages` | 普通发送 + 延迟发送 |
 | | | `sendsKeyedPayloadAndAfterCommitMessages` | key/headers、payload、事务提交后发送 |
 | `rocketmq-consumer` | `RocketMqConsumerSampleTest` | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
 | | | `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效 |
+| | | `capturesMessageIdFromConsumeContext` | 从消费上下文取 messageId，校验非空 |
 | `multi-backend` | `MultiBackendRoutingTest` | `registersTwoLogicalInstances` | 两个逻辑实例的映射与路由 |
 | | `MultiKafkaConsumerTest` | `registersConsumersToDifferentInstances` | 两个 Kafka 消费者分别注册到不同实例 |
 | `payload-types` | `PayloadTypesSampleTest` | `supportsAllPayloadTypes` | String / Integer / Boolean / POJO / List / Map / Map<Bean,List<Bean>> |

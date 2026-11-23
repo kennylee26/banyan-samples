@@ -33,4 +33,11 @@ public class OrderService {
     public List<String> handled() {
         return List.copyOf(handled);
     }
+
+    /**
+     * 清空记录，供测试隔离。
+     */
+    public void clear() {
+        handled.clear();
+    }
 }
