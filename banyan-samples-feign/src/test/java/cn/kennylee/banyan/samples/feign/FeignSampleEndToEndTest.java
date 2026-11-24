@@ -1,6 +1,6 @@
 package cn.kennylee.banyan.samples.feign;
 
-import cn.kennylee.banyan.commons.spring.web.HeaderContextHolder;
+import cn.kennylee.banyan.commons.http.HeaderContextHolder;
 import cn.kennylee.banyan.spring.feign.interceptor.ForwardHeadersInterceptor;
 import cn.kennylee.banyan.trace.autoconfigure.TraceProperties;
 import cn.kennylee.banyan.trace.context.TraceContext;
@@ -151,7 +151,7 @@ class FeignSampleEndToEndTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Tenant", "t1");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        HeaderContextHolder.disableForwardHeaders();
+        HeaderContextHolder.disablePropagation();
         RequestTemplate template = new RequestTemplate();
 
         // when
@@ -189,7 +189,7 @@ class FeignSampleEndToEndTest {
         Map<String, String> headers = Map.of("Authorization", "Bearer secret");
 
         // when
-        String text = cn.kennylee.banyan.commons.spring.log.LogSanitizer
+        String text = cn.kennylee.banyan.commons.log.LogSanitizer
                 .headers(headers, props.getLogging());
 
         // then
@@ -200,16 +200,16 @@ class FeignSampleEndToEndTest {
     @Test
     void contextHolderWorksIndependentlyOfGlobalSwitch() {
         // given
-        org.junit.jupiter.api.Assertions.assertTrue(HeaderContextHolder.isForwardEnabled());
+        org.junit.jupiter.api.Assertions.assertTrue(HeaderContextHolder.isPropagationEnabled());
 
         // when
         HeaderContextHolder.setGloballyEnabled(false);
-        boolean disabled = HeaderContextHolder.isForwardEnabled();
+        boolean disabled = HeaderContextHolder.isPropagationEnabled();
         HeaderContextHolder.setGloballyEnabled(true);
 
         // then
         org.junit.jupiter.api.Assertions.assertFalse(disabled);
-        org.junit.jupiter.api.Assertions.assertTrue(HeaderContextHolder.isForwardEnabled());
+        org.junit.jupiter.api.Assertions.assertTrue(HeaderContextHolder.isPropagationEnabled());
     }
 
     /** 转发拦截器使用的默认配置。 */
