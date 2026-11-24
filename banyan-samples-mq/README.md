@@ -111,7 +111,7 @@ SERVER_PORT=18766 ROCKETMQ_NAME_SERVER=127.0.0.1:9876 \
 | `rocketmq-producer` | `RocketMqProducerSampleTest` | `sendsPlainAndDelayedMessages` | 普通发送 + 延迟发送 |
 | | | `sendsKeyedPayloadAndAfterCommitMessages` | key/headers、payload、事务提交后发送 |
 | `rocketmq-consumer` | `RocketMqConsumerSampleTest` | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
-| | `MultiTagConsumerSampleTest` | `receivesAllTagsInExpression` | 一个方法用数组订阅同一 topic 的多个 tag |
+| | `MultiTagConsumerSampleTest` | `receivesAllConfiguredTags` | 一个方法用数组订阅同一 topic 的多个 tag |
 | | | `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效 |
 | | | `capturesMessageIdFromConsumeContext` | 从消费上下文取 messageId，校验非空 |
 | `multi-backend` | `MultiBackendRoutingTest` | `registersTwoLogicalInstances` | 两个逻辑实例的映射与路由 |

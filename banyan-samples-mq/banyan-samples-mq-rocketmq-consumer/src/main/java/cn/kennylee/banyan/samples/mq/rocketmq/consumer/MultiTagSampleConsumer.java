@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
- * 多 tag 表达式消费者：一个方法订阅同一 topic 的 created 与 cancelled 两个 tag。
+ * 多 tag 数组消费者：一个方法订阅同一 topic 的 created 与 cancelled 两个 tag。
  *
  * @author kennylee
  * @since 0.1.0

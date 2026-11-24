@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * 多 tag 表达式端到端测试：一个方法订阅 created 与 cancelled，同一 topic 的其它 tag 不消费。
+ * 多 tag 数组端到端测试：一个方法订阅 created 与 cancelled，同一 topic 的其它 tag 不消费。
  *
  * @author kennylee
  * @since 0.1.0
@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Testcontainers(disabledWithoutDocker = true)
 class MultiTagConsumerSampleTest extends AbstractRocketMqSampleTest {
 
-    /** 多 tag 表达式同时接收两个 tag，不接收其它 tag。 */
+    /** 多 tag 数组同时接收两个 tag，不接收其它 tag。 */
     @Test
-    void receivesAllTagsInExpression() {
+    void receivesAllConfiguredTags() {
         // when
         template.syncSend(MultiTagSampleConsumer.TOPIC + ":created",
                 "{\"id\":\"multi-created\"}");

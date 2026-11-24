@@ -72,7 +72,7 @@ public boolean onPaid(MqMessage message, MqConsumeContext context) {
 | 方法 | 场景 |
 |---|---|
 | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
-| `MultiTagConsumerSampleTest#receivesAllTagsInExpression` | 一个方法用 `tag = {"created", "cancelled"}` 订阅同一 topic 的多个 tag，其它 tag 不消费 |
+| `MultiTagConsumerSampleTest#receivesAllConfiguredTags` | 一个方法用 `tag = {"created", "cancelled"}` 订阅同一 topic 的多个 tag，其它 tag 不消费 |
 | `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效：topic 对上、tag 过滤仍生效 |
 | `capturesMessageIdFromConsumeContext` | 从消费上下文取 messageId，校验非空 |
 
