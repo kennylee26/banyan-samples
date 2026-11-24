@@ -1,6 +1,6 @@
 # banyan-samples-mq-rocketmq-consumer
 
-演示用 `@MqConsumer` 消费 RocketMQ 消息，按 tag 过滤；注解的 `instance` / `topic` / `tag` / `group` 全部写成 Spring 占位符，从 `application.yml` 取值。
+演示用 `@MqConsumer` 消费 RocketMQ 消息，按 tag 过滤；单 tag 消费者的 `instance` / `topic` / `tag` / `group` 写成 Spring 占位符，多 tag 消费者直接用数组。
 
 ## 启动
 

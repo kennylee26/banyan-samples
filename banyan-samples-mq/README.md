@@ -7,7 +7,7 @@
 | [`banyan-samples-mq-kafka-producer`](banyan-samples-mq-kafka-producer/README.md) | topic 直发、key + headers、payload + 自定义 codec | 随机（示例 18761） | `EmbeddedKafka` |
 | [`banyan-samples-mq-kafka-consumer`](banyan-samples-mq-kafka-consumer/README.md) | 消费上下文、boolean 返回 | 随机（示例 18762） | `EmbeddedKafka` |
 | [`banyan-samples-mq-rocketmq-producer`](banyan-samples-mq-rocketmq-producer/README.md) | tag、延迟、key + headers、payload、事务提交后发送 | 随机（示例 18763） | Testcontainers |
-| [`banyan-samples-mq-rocketmq-consumer`](banyan-samples-mq-rocketmq-consumer/README.md) | tag 过滤、消费上下文、boolean 返回 | 随机（示例 18764） | Testcontainers |
+| [`banyan-samples-mq-rocketmq-consumer`](banyan-samples-mq-rocketmq-consumer/README.md) | tag 过滤、多 tag 数组、消费上下文、boolean 返回 | 随机（示例 18764） | Testcontainers |
 | [`banyan-samples-mq-multi-backend`](banyan-samples-mq-multi-backend/README.md) | Kafka 与 RocketMQ 并存，两个生产者按实例路由 | 随机（示例 18765） | 不连 broker，只验证实例映射 |
 | [`banyan-samples-mq-payload-types`](banyan-samples-mq-payload-types/README.md) | String / Integer / Boolean / POJO / List / Map / `Map<Bean, List<Bean>>` | 随机（示例 18766） | Testcontainers |
 
@@ -19,6 +19,7 @@
 |---|---|
 | 基础发送（topic + body） | `kafka-producer`、`rocketmq-producer` |
 | tag / 路由键 | `rocketmq-producer`、`rocketmq-consumer` |
+| 一个 topic 多 tag（数组） | `rocketmq-consumer` |
 | 延迟消息 | `rocketmq-producer` |
 | key + headers | `kafka-producer`、`rocketmq-producer` |
 | 事务提交后发送 | `rocketmq-producer` |
@@ -110,6 +111,7 @@ SERVER_PORT=18766 ROCKETMQ_NAME_SERVER=127.0.0.1:9876 \
 | `rocketmq-producer` | `RocketMqProducerSampleTest` | `sendsPlainAndDelayedMessages` | 普通发送 + 延迟发送 |
 | | | `sendsKeyedPayloadAndAfterCommitMessages` | key/headers、payload、事务提交后发送 |
 | `rocketmq-consumer` | `RocketMqConsumerSampleTest` | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
+| | `MultiTagConsumerSampleTest` | `receivesAllTagsInExpression` | 一个方法用数组订阅同一 topic 的多个 tag |
 | | | `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效 |
 | | | `capturesMessageIdFromConsumeContext` | 从消费上下文取 messageId，校验非空 |
 | `multi-backend` | `MultiBackendRoutingTest` | `registersTwoLogicalInstances` | 两个逻辑实例的映射与路由 |

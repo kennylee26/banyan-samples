@@ -1,17 +1,9 @@
 package cn.kennylee.banyan.samples.mq.rocketmq.consumer;
 
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
@@ -26,30 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers(disabledWithoutDocker = true)
-class MultiTagConsumerSampleTest {
-
-    @Container
-    static final RocketMqContainers RMQ =
-            new RocketMqContainers(MultiTagSampleConsumer.TOPIC);
-
-    @DynamicPropertySource
-    static void rocketMqProperties(DynamicPropertyRegistry registry) {
-        registry.add("rocketmq.name-server", RMQ::nameServer);
-    }
-
-    @Autowired
-    private TestRestTemplate rest;
-
-    @Autowired
-    private RocketMQTemplate template;
-
-    @Autowired
-    private MessageStore store;
-
-    @AfterEach
-    void clearStore() {
-        store.clear();
-    }
+class MultiTagConsumerSampleTest extends AbstractRocketMqSampleTest {
 
     /** 多 tag 表达式同时接收两个 tag，不接收其它 tag。 */
     @Test
@@ -68,11 +37,7 @@ class MultiTagConsumerSampleTest {
                         && messages().contains("cancelled:{\"id\":\"multi-cancelled\"}"));
         assertTrue(messages().contains("created:{\"id\":\"multi-created\"}"));
         assertTrue(messages().contains("cancelled:{\"id\":\"multi-cancelled\"}"));
-        assertFalse(messages().contains("other:{\"id\":\"multi-other\"}"));
-    }
-
-    private List<String> messages() {
-        String[] body = rest.getForObject("/messages", String[].class);
-        return body == null ? List.of() : List.of(body);
+        await().during(2, TimeUnit.SECONDS).atMost(5, TimeUnit.SECONDS)
+                .until(() -> !messages().contains("other:{\"id\":\"multi-other\"}"));
     }
 }
