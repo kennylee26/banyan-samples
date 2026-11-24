@@ -1,6 +1,6 @@
 package cn.kennylee.banyan.samples.feign;
 
-import cn.kennylee.banyan.spring.feign.FeignContextHolder;
+import cn.kennylee.banyan.commons.spring.web.HeaderContextHolder;
 import cn.kennylee.banyan.spring.feign.interceptor.ForwardHeadersInterceptor;
 import cn.kennylee.banyan.trace.autoconfigure.TraceProperties;
 import cn.kennylee.banyan.trace.context.TraceContext;
@@ -50,7 +50,7 @@ class FeignSampleEndToEndTest {
     @AfterEach
     void clear() {
         RequestContextHolder.resetRequestAttributes();
-        FeignContextHolder.clear();
+        HeaderContextHolder.clear();
         org.slf4j.MDC.clear();
     }
 
@@ -129,7 +129,7 @@ class FeignSampleEndToEndTest {
         request.addHeader("X-Tenant", "t1");
         request.addHeader("Authorization", "Bearer secret");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        FeignContextHolder.addCustomHeader("X-Tenant", "override");
+        HeaderContextHolder.addCustomHeader("X-Tenant", "override");
         SampleFeignClient forwardingClient = Feign.builder()
                 .contract(new SpringMvcContract())
                 .decoder(new ResponseEntityDecoder(new SpringDecoder(messageConverters)))
@@ -151,7 +151,7 @@ class FeignSampleEndToEndTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Tenant", "t1");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        FeignContextHolder.disableForwardHeaders();
+        HeaderContextHolder.disableForwardHeaders();
         RequestTemplate template = new RequestTemplate();
 
         // when
@@ -168,8 +168,8 @@ class FeignSampleEndToEndTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("x-tenant", "origin");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        FeignContextHolder.addBlockedHeader("X-TENANT");
-        FeignContextHolder.addCustomHeader("X-Tenant", "override");
+        HeaderContextHolder.addBlockedHeader("X-TENANT");
+        HeaderContextHolder.addCustomHeader("X-Tenant", "override");
         RequestTemplate template = new RequestTemplate();
 
         // when
@@ -177,7 +177,7 @@ class FeignSampleEndToEndTest {
 
         // then
         assertEquals("override", template.headers().get("X-Tenant").iterator().next());
-        assertTrue(FeignContextHolder.current().getCustomHeaders().isEmpty());
+        assertTrue(HeaderContextHolder.current().getCustomHeaders().isEmpty());
     }
 
     /** 关闭脱敏后日志打印敏感 header 原值。 */
@@ -189,7 +189,7 @@ class FeignSampleEndToEndTest {
         Map<String, String> headers = Map.of("Authorization", "Bearer secret");
 
         // when
-        String text = cn.kennylee.banyan.spring.feign.logging.FeignLogSupport
+        String text = cn.kennylee.banyan.commons.spring.log.LogSanitizer
                 .headers(headers, props.getLogging());
 
         // then
@@ -200,16 +200,16 @@ class FeignSampleEndToEndTest {
     @Test
     void contextHolderWorksIndependentlyOfGlobalSwitch() {
         // given
-        org.junit.jupiter.api.Assertions.assertTrue(FeignContextHolder.isForwardEnabled());
+        org.junit.jupiter.api.Assertions.assertTrue(HeaderContextHolder.isForwardEnabled());
 
         // when
-        FeignContextHolder.setGloballyEnabled(false);
-        boolean disabled = FeignContextHolder.isForwardEnabled();
-        FeignContextHolder.setGloballyEnabled(true);
+        HeaderContextHolder.setGloballyEnabled(false);
+        boolean disabled = HeaderContextHolder.isForwardEnabled();
+        HeaderContextHolder.setGloballyEnabled(true);
 
         // then
         org.junit.jupiter.api.Assertions.assertFalse(disabled);
-        org.junit.jupiter.api.Assertions.assertTrue(FeignContextHolder.isForwardEnabled());
+        org.junit.jupiter.api.Assertions.assertTrue(HeaderContextHolder.isForwardEnabled());
     }
 
     /** 转发拦截器使用的默认配置。 */
