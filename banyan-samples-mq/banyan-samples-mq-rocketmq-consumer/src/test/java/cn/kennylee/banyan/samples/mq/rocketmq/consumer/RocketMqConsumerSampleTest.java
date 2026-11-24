@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -41,7 +40,8 @@ class RocketMqConsumerSampleTest extends AbstractRocketMqSampleTest {
 
         // then
         await().atMost(40, TimeUnit.SECONDS).until(() -> messages().contains("{\"id\":6}"));
-        assertFalse(messages().contains("{\"id\":99}"));
+        await().during(2, TimeUnit.SECONDS).atMost(5, TimeUnit.SECONDS)
+                .until(() -> !messages().contains("{\"id\":99}"));
     }
 
     @Test
