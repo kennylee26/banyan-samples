@@ -19,9 +19,6 @@ public class MultiTagSampleConsumer {
     /** 消费 topic，与单 tag 示例共用。 */
     static final String TOPIC = "banyan-sample-rocketmq-consumer";
 
-    /** 多 tag 表达式。 */
-    static final String TAG_EXPRESSION = "created || cancelled";
-
     private final MessageStore store;
 
     /**
@@ -42,7 +39,7 @@ public class MultiTagSampleConsumer {
     @MqConsumer(
             instance = "${samples.mq.instance:rocketmq}",
             topic = "${samples.mq.topic:" + TOPIC + "}",
-            tag = TAG_EXPRESSION,
+            tag = {"created", "cancelled"},
             group = "banyan-sample-rocketmq-multi-tag",
             groupSuffixEnabled = false,
             tagSuffixEnabled = false)
