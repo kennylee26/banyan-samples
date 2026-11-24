@@ -40,7 +40,8 @@ samples:
 
 ## 使用
 
-向 `banyan-sample-rocketmq-consumer` 的 `paid` tag 发送消息后，查询已消费内容：
+向 `banyan-sample-rocketmq-consumer` 的 `paid` tag 发送消息后，查询已消费内容。
+同一个 topic 上还有一个多 tag 消费者 `MultiTagSampleConsumer`，用 `created || cancelled` 订阅两个 tag，记录内容带 `tag:` 前缀：
 
 ```bash
 curl http://localhost:18764/messages
@@ -71,6 +72,7 @@ public boolean onPaid(MqMessage message, MqConsumeContext context) {
 | 方法 | 场景 |
 |---|---|
 | `consumesWithMqConsumer` | tag 过滤 + 消费上下文 |
+| `MultiTagConsumerSampleTest#receivesAllTagsInExpression` | 一个方法用 `created \|\| cancelled` 订阅同一 topic 的多个 tag，其它 tag 不消费 |
 | `resolvesPlaceholderAttributesAndFiltersTag` | 注解属性经 Spring 占位符解析后生效：topic 对上、tag 过滤仍生效 |
 | `capturesMessageIdFromConsumeContext` | 从消费上下文取 messageId，校验非空 |
 
