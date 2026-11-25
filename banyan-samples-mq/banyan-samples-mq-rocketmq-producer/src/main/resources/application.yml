@@ -15,11 +15,15 @@ rocketmq:
     retry-times-when-send-failed: 2
 
 # banyan-mq：单后端项目也建议显式声明实例
+# 完整默认值与注释见 banyan-mq 模块的 banyan-mq.yml
 banyan:
   mq:
-    enabled: true
+    enabled: true                    # 总开关，默认 true
     producer:
-      enabled: true
+      enabled: true                  # 生产者模块开关，默认 true
+      tag-suffix-enabled: true       # 给 tag 追加环境后缀，默认 true
+    rocketmq:
+      enabled: true                  # RocketMQ 后端开关，默认 true
     instances:
       rocketmq:
-        type: rocketmq
+        type: rocketmq               # 逻辑实例名 → 后端类型

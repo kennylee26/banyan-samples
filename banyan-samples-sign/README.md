@@ -35,6 +35,20 @@ banyan:
 三者都会自动加密 body、计算签名并写入五个 header。想全自动时也可以用
 `SigningHttpClients.create(signer)` / `SigningRestTemplates.create(signer)`。
 
+## 关键配置项
+
+`application.yml` 显式列出 `banyan-sign-openapi` 的相关键（与 [`application.yml`](src/main/resources/application.yml) 一致）：
+
+| 配置项 | 样例值 | 默认值 / 说明 |
+|---|---|---|
+| `banyan.openapi-sign.enabled` | `true` | 模块总开关，默认 `true` |
+| `banyan.openapi-sign.encrypted` | `true` | 是否要求 body 加密，默认 `true` |
+| `banyan.openapi-sign.window` | `5m` | 验签时间窗口，默认 `5m` |
+| `banyan.openapi-sign.reveal-reason` | `false` | 是否返回具体失败原因，默认 `false` |
+| `banyan.openapi-sign.keys.app1` | `secret-for-tests` | 样例联调用固定密钥 |
+
+其余键（`sign-algorithm`、`cipher`、`headers.*`、`error.*`）保持默认，完整说明见 `banyan-sign-openapi` 模块的 `banyan-sign-openapi.yml`。
+
 ## 测试用例
 
 | 测试类 | 覆盖 |

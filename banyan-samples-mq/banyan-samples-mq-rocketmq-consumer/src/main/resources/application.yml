@@ -22,10 +22,12 @@ rocketmq:
 # banyan-mq：消费者组的实际值由注解上的 group 或自动生成，suffix 关闭以复用固定组名
 banyan:
   mq:
-    enabled: true
+    enabled: true                    # 总开关，默认 true
     consumer:
-      enabled: true
-      suffix-enabled: false
+      enabled: true                  # 消费者模块开关，默认 true
+      suffix-enabled: false          # 固定消费组名，不追加环境后缀，默认 true
+    rocketmq:
+      enabled: true                  # RocketMQ 后端开关，默认 true
     instances:
       rocketmq:
-        type: rocketmq
+        type: rocketmq               # 逻辑实例名 → 后端类型

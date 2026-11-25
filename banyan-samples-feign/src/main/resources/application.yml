@@ -1,22 +1,40 @@
 server:
   port: ${SERVER_PORT:18768}
 
+# banyan-spring-feign 与 banyan-trace 配置。
+# 完整默认值与注释见 banyan-spring-feign 与 banyan-trace 模块的对应 yml。
 banyan:
   spring:
     feign:
+      enabled: true                 # 总开关，默认 true
       forward-headers:
-        enabled: false
+        enabled: false              # 入站 header 转发，安全默认关闭
+        clear-after-apply: true     # 每次 apply 后自动清理上下文，默认 true
+        blocked-headers: []         # 额外阻塞头，默认空
       request-log:
-        enabled: true
+        enabled: true               # DEBUG 请求日志，默认 true
       response-log:
-        enabled: true
+        enabled: true               # DEBUG 响应日志，默认 true
       logging:
-        mask-sensitive: true
+        mask-sensitive: true        # 敏感 header 值脱敏，默认 true
+        masked-headers:             # 脱敏名单，默认 Authorization,Cookie,Set-Cookie
+          - Authorization
+          - Cookie
+          - Set-Cookie
+        ignored-headers: []         # 完全不打印的 header，默认空
+        max-body-length: 2048       # body 打印上限，默认 2048
   trace:
-    header-name: X-Trace-Id
+    enabled: true                   # trace 总开关，默认 true
+    header-name: X-Trace-Id         # 传输 header 名，默认 X-Trace-Id
+    mdc-key: traceId                # 日志 MDC key，默认 traceId
+    accept-incoming: true           # 沿用上游传入的 TraceId，默认 true
+    servlet:
+      enabled: true                 # 启用 Servlet 过滤器，默认 true
+    async:
+      decorate-executors: true      # 自动装饰容器线程池，默认 true
     feign:
-      enabled: true
-      response-enabled: true
+      enabled: true                 # Feign 出向透传，默认 true
+      response-enabled: true        # 响应侧 TraceId 补全，默认 true
 
 logging:
   level:

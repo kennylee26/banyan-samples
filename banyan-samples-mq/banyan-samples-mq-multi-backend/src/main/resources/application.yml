@@ -16,9 +16,12 @@ rocketmq:
 
 banyan:
   mq:
-    enabled: true
+    enabled: true                    # 总开关，默认 true
     producer:
-      enabled: true
+      enabled: true                  # 生产者模块开关，默认 true
+      tag-suffix-enabled: true       # 给 tag 追加环境后缀，默认 true
     # 关闭 Kafka 后端的自动装配：两个 Kafka 集群由 KafkaClustersConfig 手动创建
     kafka:
-      enabled: false
+      enabled: false                 # 关闭自动装配，改由样例手动创建两个 Kafka 集群
+    rocketmq:
+      enabled: true                  # RocketMQ 后端开关，默认 true

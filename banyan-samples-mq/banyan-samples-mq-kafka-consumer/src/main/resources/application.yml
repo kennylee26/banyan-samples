@@ -12,12 +12,16 @@ spring:
       enable-auto-commit: false
 
 # banyan-mq：suffix-enabled=false 与注解上的 suffixEnabled=false 保持一致
+# 完整默认值与注释见 banyan-mq 模块的 banyan-mq.yml
 banyan:
   mq:
-    enabled: true
+    enabled: true                    # 总开关，默认 true
+    # suffix 为空时使用首个激活 profile；本样例不设 profile
     consumer:
-      enabled: true
-      suffix-enabled: false
+      enabled: true                  # 消费者模块开关，默认 true
+      suffix-enabled: false          # 不给消费组与 tag 追加环境后缀，默认 true
+    kafka:
+      enabled: true                  # Kafka 后端开关，默认 true
     instances:
       kafka:
-        type: kafka
+        type: kafka                  # 逻辑实例名 → 后端类型

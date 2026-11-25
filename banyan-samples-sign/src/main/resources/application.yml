@@ -1,7 +1,14 @@
 server:
   port: 0
 
+# banyan-sign-openapi 配置。完整默认值与注释见 banyan-sign-openapi 模块的 banyan-sign-openapi.yml。
 banyan:
   openapi-sign:
+    enabled: true                 # 模块总开关，默认 true
+    encrypted: true               # 是否要求 body 加密，默认 true；灰度期可设 false 只验签
+    window: 5m                    # 验签时间窗口，默认 5m
+    reveal-reason: false          # 响应是否返回具体失败原因，默认 false；上线前保持 false
     keys:
-      app1: secret-for-tests
+      app1: secret-for-tests      # keyId → secret，样例用固定值联调；仅建议用于演示
+    # 其余默认值：sign-algorithm=HmacSHA256、cipher=aes-gcm、
+    # headers.alg/key-id/timestamp/nonce/sign=X-Banyan-*、error.code=openapi.sign.invalid
