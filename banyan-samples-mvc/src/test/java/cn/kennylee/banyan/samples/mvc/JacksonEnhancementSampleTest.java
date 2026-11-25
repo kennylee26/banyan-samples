@@ -12,30 +12,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * 可选 Jackson 增强样例：Long 转字符串，日期格式复用 Spring Boot 原生键。
+ * Jackson 增强样例：默认开启，Long 转字符串，Date 与 LocalDateTime 统一格式。
  *
  * @author kennylee
  * @since 0.1.0
  */
-@SpringBootTest(properties = {
-        "banyan.spring.mvc.jackson.enabled=true",
-        "spring.jackson.date-format=yyyy-MM-dd HH:mm:ss",
-        "spring.jackson.time-zone=UTC"})
+@SpringBootTest(properties = "spring.jackson.time-zone=UTC")
 @AutoConfigureMockMvc
 class JacksonEnhancementSampleTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    /** 开启增强后 Long 输出字符串；日期格式由 spring.jackson.date-format 生效。 */
+    /** Long 输出字符串；Date 与 LocalDateTime 都按模块默认格式输出。 */
     @Test
-    void longAsStringAndNativeDateFormat() throws Exception {
+    void formatsLongAndDateTime() throws Exception {
         // when
         ResultActions actions = mockMvc.perform(get("/api/ok"));
 
         // then
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.longValue").value("42"))
-                .andExpect(jsonPath("$.date").value("1970-01-01 00:00:00"));
+                .andExpect(jsonPath("$.date").value("1970-01-01 00:00:00"))
+                .andExpect(jsonPath("$.localDateTime").value("2026-11-25 10:30:00"));
     }
 }

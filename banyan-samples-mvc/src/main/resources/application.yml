@@ -1,7 +1,21 @@
 server:
   port: ${SERVER_PORT:0}
 
+# banyan-spring-mvc 配置。完整默认值与注释见 banyan-spring-mvc 模块的 banyan-spring-mvc.yml。
 banyan:
   spring:
     mvc:
-      enabled: true
+      enabled: true                 # 总开关，默认 true；false 时不注册本模块任何 bean
+      web-exception:
+        enabled: true               # MVC 参数/绑定/校验异常 advice，默认 true
+      feign-exception:
+        enabled: true               # Feign 异常 advice，默认 true；classpath 无 feign 时静默跳过
+      fallback-exception:
+        enabled: true               # 兜底 Exception advice，默认 true
+      jackson:
+        enabled: true               # Jackson 增强，默认 true；false 时不改任何 JSON 输出
+        long-as-string: true        # Long 转字符串，防前端精度丢失
+        enums-using-name: true      # 枚举按 name 序列化
+        big-decimal-as-plain: true  # BigDecimal 非科学计数法
+        date-format: yyyy-MM-dd HH:mm:ss  # Date 与 LocalDateTime 的输入/输出格式；空表示不处理日期
+        time-zone:                  # 日期时区；空表示沿用应用默认
