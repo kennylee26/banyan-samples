@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
@@ -33,7 +34,8 @@ public class SampleController {
                 "name", "banyan",
                 "longValue", 42L,
                 "date", new Date(0L),
-                "localDateTime", LocalDateTime.of(2026, 11, 25, 10, 30, 0));
+                "localDateTime", LocalDateTime.of(2026, 11, 25, 10, 30, 0),
+                "localDate", LocalDate.of(2026, 11, 25));
     }
 
     /**

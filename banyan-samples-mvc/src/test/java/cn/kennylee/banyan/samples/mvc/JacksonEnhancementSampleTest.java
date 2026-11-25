@@ -34,6 +34,7 @@ class JacksonEnhancementSampleTest {
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.longValue").value("42"))
                 .andExpect(jsonPath("$.date").value("1970-01-01 00:00:00"))
-                .andExpect(jsonPath("$.localDateTime").value("2026-11-25 10:30:00"));
+                .andExpect(jsonPath("$.localDateTime").value("2026-11-25 10:30:00"))
+                .andExpect(jsonPath("$.localDate").value("2026-11-25"));
     }
 }

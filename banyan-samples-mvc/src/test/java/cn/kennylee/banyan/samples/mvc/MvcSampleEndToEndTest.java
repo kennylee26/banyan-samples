@@ -53,6 +53,7 @@ class MvcSampleEndToEndTest {
                 .andExpect(jsonPath("$.name").value("banyan"))
                 .andExpect(jsonPath("$.longValue").value("42"))
                 .andExpect(jsonPath("$.localDateTime").value("2026-11-25 10:30:00"))
+                .andExpect(jsonPath("$.localDate").value("2026-11-25"))
                 .andExpect(jsonPath("$.code").doesNotExist())
                 .andExpect(jsonPath("$.data").doesNotExist());
     }

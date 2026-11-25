@@ -17,5 +17,7 @@ banyan:
         long-as-string: true        # Long 转字符串，防前端精度丢失
         enums-using-name: true      # 枚举按 name 序列化
         big-decimal-as-plain: true  # BigDecimal 非科学计数法
+        lenient-boolean: true       # 布尔接受 true/false、0/1、字符串 "true"/"false"/"0"/"1"
         date-format: yyyy-MM-dd HH:mm:ss  # Date 与 LocalDateTime 的输入/输出格式；空表示不处理日期
+        local-date-format: yyyy-MM-dd     # LocalDate 的输入/输出格式；不能带时间字段
         time-zone:                  # 日期时区；空表示沿用应用默认
