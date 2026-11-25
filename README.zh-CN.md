@@ -11,6 +11,7 @@
 | [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` 示例：Kafka / RocketMQ 的生产者与消费者、多后端路由、payload 类型 |
 | [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` 示例：内嵌签名提供方 + HttpClient5 / RestTemplate 客户端 |
 | [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` 示例：header 转发、日志与 traceId 透传 |
+| [`banyan-samples-mvc/`](banyan-samples-mvc/README.md) | `banyan-spring-mvc` 示例：分级异常 advice、可替换错误响应与可选 Jackson 增强 |
 
 ## 约定
 

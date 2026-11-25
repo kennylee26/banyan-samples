@@ -11,6 +11,7 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 | [`banyan-samples-mq/`](banyan-samples-mq/README.md) | `banyan-mq` in action: producers and consumers on Kafka and RocketMQ, multi-backend routing, payload types |
 | [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` in action: signed provider plus HttpClient5 and RestTemplate clients |
 | [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` in action: header forwarding, logging and traceId propagation |
+| [`banyan-samples-mvc/`](banyan-samples-mvc/README.md) | `banyan-spring-mvc` in action: ordered exception advices, replaceable error response and optional Jackson enhancements |
 
 ## Conventions
 
