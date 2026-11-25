@@ -3,3 +3,6 @@ target/
 *.iml
 .DS_Store
 .metrics/
+
+# 本地规格工作台，不入库
+docs/
