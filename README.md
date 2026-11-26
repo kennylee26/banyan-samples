@@ -12,6 +12,7 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 | [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` in action: signed provider plus HttpClient5 and RestTemplate clients |
 | [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` in action: header forwarding, logging and traceId propagation |
 | [`banyan-samples-mvc/`](banyan-samples-mvc/README.md) | `banyan-spring-mvc` in action: ordered exception advices, replaceable error response and optional Jackson enhancements |
+| [`banyan-samples-excel/`](banyan-samples-excel/README.md) | `banyan-excel` in action: paginated batch export, templates, automatic sheet splitting and CSV |
 
 ## Conventions
 
@@ -22,7 +23,7 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 
 ## Build
 
-Samples depend on `cn.kennylee.banyan:banyan-mq-*` and `banyan-sign-*` / `banyan-spring-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
+Samples depend on `cn.kennylee.banyan:banyan-mq-*` and `banyan-sign-*` / `banyan-spring-*` / `banyan-excel-*:0.1.0-SNAPSHOT`. Install the library first in the [banyan](https://github.com/kennylee26/banyan) repo:
 
 ```bash
 # sign samples (run full install from the banyan repo root)

@@ -1,0 +1,10 @@
+# banyan-excel 是纯调用式工具库：不注册 Spring bean、没有自动装配，
+# 也没有任何 banyan.* 配置项。
+#
+# 批次大小、最大条数、sheet 容量与输出格式都在调用 ExcelExporterBuilder 时显式设置，
+# 不走配置文件；完整 API 见 banyan-excel-exporter 模块的 README。
+
+# 样例自身配置（非 banyan.* 键）：启动时是否导出一次示例文件。
+samples:
+  excel:
+    demo: true   # 默认 true；启动时导出 100 行示例并打印路径，测试里置 false 关闭

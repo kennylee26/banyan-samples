@@ -24,6 +24,7 @@
         <module>banyan-samples-sign</module>
         <module>banyan-samples-feign</module>
         <module>banyan-samples-mvc</module>
+        <module>banyan-samples-excel</module>
     </modules>
 
     <properties>

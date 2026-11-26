@@ -12,6 +12,7 @@
 | [`banyan-samples-sign/`](banyan-samples-sign/README.md) | `banyan-sign` 示例：内嵌签名提供方 + HttpClient5 / RestTemplate 客户端 |
 | [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` 示例：header 转发、日志与 traceId 透传 |
 | [`banyan-samples-mvc/`](banyan-samples-mvc/README.md) | `banyan-spring-mvc` 示例：分级异常 advice、可替换错误响应与可选 Jackson 增强 |
+| [`banyan-samples-excel/`](banyan-samples-excel/README.md) | `banyan-excel` 示例：分页批次导出、模板、自动分 sheet 与 CSV |
 
 ## 约定
 
@@ -22,7 +23,7 @@
 
 ## 构建
 
-示例依赖 `cn.kennylee.banyan:banyan-mq-*` 与 `banyan-sign-*` / `banyan-spring-*:0.1.0-SNAPSHOT`，先到 [banyan](https://github.com/kennylee26/banyan) 仓安装库：
+示例依赖 `cn.kennylee.banyan:banyan-mq-*` 与 `banyan-sign-*` / `banyan-spring-*` / `banyan-excel-*:0.1.0-SNAPSHOT`，先到 [banyan](https://github.com/kennylee26/banyan) 仓安装库：
 
 ```bash
 # sign 示例（在 banyan 仓根目录执行全量 install）
