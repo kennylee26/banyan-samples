@@ -4,6 +4,7 @@ import cn.kennylee.banyan.excel.exporter.ExcelRowWriter;
 import cn.kennylee.banyan.excel.exporter.WriterContext;
 import cn.kennylee.banyan.samples.excel.model.OrderRow;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,8 +16,21 @@ import java.util.List;
  */
 public final class FailingOrderWriter implements ExcelRowWriter<OrderRow> {
 
+    /** 写出目标，供测试核对失败后是否被清理。 */
+    private File target;
+
     @Override
     public void open(WriterContext<OrderRow> context) {
+        this.target = context.target();
+    }
+
+    /**
+     * 获取写出目标。
+     *
+     * @return 写出目标，打开前为 {@code null}
+     */
+    public File getTarget() {
+        return target;
     }
 
     @Override

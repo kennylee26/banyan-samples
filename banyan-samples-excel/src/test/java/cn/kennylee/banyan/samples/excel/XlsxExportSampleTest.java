@@ -38,11 +38,10 @@ class XlsxExportSampleTest extends AbstractExcelSampleTest {
         // then
         File file = writeTemp(".xlsx", body);
         assertEquals(SampleOrders.of(100), ExcelTestSupport.read(file));
-        file.delete();
     }
 
     @Test
-    @DisplayName("GET /export/template 用模板导出且不重复表头")
+    @DisplayName("GET /export/template 用真实模板文件导出且保留模板表头")
     void exportsWithTemplate() throws Exception {
         // when
         byte[] body = mockMvc.perform(get("/export/template").param("rows", "50"))
@@ -52,8 +51,9 @@ class XlsxExportSampleTest extends AbstractExcelSampleTest {
 
         // then
         File file = writeTemp(".xlsx", body);
-        assertEquals(SampleOrders.of(50), ExcelTestSupport.read(file));
-        file.delete();
+        assertEquals(50, ExcelTestSupport.read(file).size(), "应写入 50 行数据");
+        // 模板表头文案与 @ExcelProperty 不同；若模板被忽略，这里会变成「订单号」
+        assertEquals("订单编号", ExcelTestSupport.firstHeader(file), "模板表头应保留");
     }
 
     @Test
@@ -70,6 +70,5 @@ class XlsxExportSampleTest extends AbstractExcelSampleTest {
         File file = writeTemp(".xlsx", body);
         assertEquals(4, ExcelTestSupport.sheetCount(file), "100 行、容量 30 应分 4 个 sheet");
         assertEquals(SampleOrders.of(100), ExcelTestSupport.readAllSheets(file));
-        file.delete();
     }
 }

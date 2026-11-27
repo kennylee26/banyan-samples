@@ -6,6 +6,7 @@ import cn.kennylee.banyan.samples.excel.model.OrderRow;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public final class SemicolonOrderWriter implements ExcelRowWriter<OrderRow> {
 
     @Override
     public void open(WriterContext<OrderRow> context) throws IOException {
-        this.out = Files.newBufferedWriter(context.target().toPath());
+        this.out = Files.newBufferedWriter(context.target().toPath(), StandardCharsets.UTF_8);
     }
 
     @Override

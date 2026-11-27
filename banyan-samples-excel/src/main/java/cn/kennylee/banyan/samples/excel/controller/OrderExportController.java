@@ -3,10 +3,11 @@ package cn.kennylee.banyan.samples.excel.controller;
 import cn.kennylee.banyan.excel.exporter.ExcelExportResult;
 import cn.kennylee.banyan.samples.excel.service.OrderExportService;
 import cn.kennylee.banyan.samples.excel.support.SampleOrders;
-import cn.kennylee.banyan.samples.excel.support.SampleTemplates;
 import cn.kennylee.banyan.samples.excel.writer.FailingOrderWriter;
 import cn.kennylee.banyan.samples.excel.writer.SemicolonOrderWriter;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +28,21 @@ import java.nio.file.Files;
 @RequestMapping("/export")
 public class OrderExportController {
 
+    /** 日志器。 */
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderExportController.class);
+
     /** xlsx 媒体类型。 */
     private static final MediaType XLSX = MediaType.parseMediaType(
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+    /** 基础导出批次大小。 */
+    private static final int BATCH_SIZE = 30;
+
+    /** 游标分页批次大小。 */
+    private static final int CURSOR_BATCH_SIZE = 15;
+
+    /** 失败场景导出条数。 */
+    private static final int FAIL_ROWS = 5;
 
     /** 导出服务。 */
     private final OrderExportService exportService;
@@ -48,12 +61,12 @@ public class OrderExportController {
     @GetMapping("/xlsx")
     public void xlsx(@RequestParam(defaultValue = "100") int rows,
                      HttpServletResponse response) throws IOException {
-        ExcelExportResult result = exportService.exportXlsx(SampleOrders.of(rows), 30);
+        ExcelExportResult result = exportService.exportXlsx(SampleOrders.of(rows), BATCH_SIZE);
         download(result, "orders.xlsx", XLSX, response);
     }
 
     /**
-     * 带模板导出。
+     * 带模板导出：从 classpath 读取 {@code templates/orders-template.xlsx}。
      *
      * @param rows     导出条数
      * @param response HTTP 响应
@@ -62,7 +75,10 @@ public class OrderExportController {
     @GetMapping("/template")
     public void template(@RequestParam(defaultValue = "50") int rows,
                          HttpServletResponse response) throws IOException {
-        try (InputStream template = SampleTemplates.headerOnly("订单号", "客户", "金额", "状态")) {
+        try (InputStream template = getClass().getResourceAsStream("/templates/orders-template.xlsx")) {
+            if (template == null) {
+                throw new IllegalStateException("模板不存在: /templates/orders-template.xlsx");
+            }
             ExcelExportResult result = exportService.exportWithTemplate(SampleOrders.of(rows), template);
             download(result, "orders-template.xlsx", XLSX, response);
         }
@@ -108,7 +124,7 @@ public class OrderExportController {
     @GetMapping("/cursor")
     public void cursor(@RequestParam(defaultValue = "100") int rows,
                        HttpServletResponse response) throws IOException {
-        ExcelExportResult result = exportService.exportWithCursor(SampleOrders.of(rows), 15);
+        ExcelExportResult result = exportService.exportWithCursor(SampleOrders.of(rows), CURSOR_BATCH_SIZE);
         download(result, "orders-cursor.xlsx", XLSX, response);
     }
 
@@ -169,8 +185,9 @@ public class OrderExportController {
     @GetMapping("/fail")
     public void fail(HttpServletResponse response) {
         try {
-            exportService.exportWithCustomWriter(SampleOrders.of(5), new FailingOrderWriter());
+            exportService.exportWithCustomWriter(SampleOrders.of(FAIL_ROWS), new FailingOrderWriter());
         } catch (RuntimeException e) {
+            LOGGER.warn("导出失败", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

@@ -32,6 +32,5 @@ class CsvExportSampleTest extends AbstractExcelSampleTest {
         // then
         File file = writeTemp(".csv", body);
         assertEquals(SampleOrders.of(100), ExcelTestSupport.read(file), "CSV 单文件包含全部行");
-        file.delete();
     }
 }

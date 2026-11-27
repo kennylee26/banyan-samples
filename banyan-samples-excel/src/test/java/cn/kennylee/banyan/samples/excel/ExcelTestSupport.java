@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 样例测试共用工具：读回导出文件、统计 sheet、生成最小模板。
+ * 样例测试共用工具：读回导出文件、统计 sheet 与读取首行表头。
  *
  * @author kennylee
  * @since 0.1.0

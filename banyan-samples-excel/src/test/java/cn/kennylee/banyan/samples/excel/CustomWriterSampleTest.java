@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -35,10 +36,9 @@ class CustomWriterSampleTest extends AbstractExcelSampleTest {
 
         // then
         File file = writeTemp(".txt", body);
-        List<String> lines = Files.readAllLines(file.toPath());
+        List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
         assertEquals(10, lines.size());
         assertEquals("ORD-00001;客户0;100;PAID", lines.get(0));
-        file.delete();
     }
 
     @Test

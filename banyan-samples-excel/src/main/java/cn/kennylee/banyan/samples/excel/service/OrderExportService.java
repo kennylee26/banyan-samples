@@ -22,6 +22,9 @@ import java.util.List;
 @Service
 public class OrderExportService {
 
+    /** 大数据量导出批次大小。 */
+    private static final int LARGE_BATCH_SIZE = 5_000;
+
     /**
      * 基础 xlsx 导出。
      *
@@ -105,7 +108,7 @@ public class OrderExportService {
      */
     public ExcelExportResult exportLarge(int rows) {
         return FastExcelExporters.xlsx(new GeneratedOrderSource(rows), OrderRow.class)
-            .batchSize(5_000)
+            .batchSize(LARGE_BATCH_SIZE)
             .export();
     }
 

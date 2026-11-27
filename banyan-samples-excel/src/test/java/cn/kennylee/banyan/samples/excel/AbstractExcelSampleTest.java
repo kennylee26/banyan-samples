@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 样例测试基类：启动真实容器与 MockMvc，并在每个用例结束后清理临时文件。
+ * 样例测试基类：启动 Spring 上下文与 MockMvc，并在每个用例结束后清理临时文件。
  *
  * @author kennylee
  * @since 0.1.0

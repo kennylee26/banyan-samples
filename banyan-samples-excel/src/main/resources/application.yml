@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:0}
+  port: ${SERVER_PORT:0}   # 默认 0（随机端口）；需要固定端口用 SERVER_PORT 覆盖
 
 # banyan-excel 是纯调用式工具库：不注册 Spring bean、没有自动装配，
 # 也没有任何 banyan.* 配置项。

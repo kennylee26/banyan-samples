@@ -32,7 +32,6 @@ class PaginationAndLimitSampleTest extends AbstractExcelSampleTest {
         // then
         File file = writeTemp(".xlsx", body);
         assertEquals(SampleOrders.of(100), ExcelTestSupport.read(file));
-        file.delete();
     }
 
     @Test
@@ -49,7 +48,6 @@ class PaginationAndLimitSampleTest extends AbstractExcelSampleTest {
         // then
         File file = writeTemp(".xlsx", body);
         assertEquals(40, ExcelTestSupport.read(file).size());
-        file.delete();
     }
 
     @Test
@@ -65,6 +63,5 @@ class PaginationAndLimitSampleTest extends AbstractExcelSampleTest {
         assertEquals(1, ExcelTestSupport.sheetCount(file), "空数据也应建立 sheet");
         assertEquals("订单号", ExcelTestSupport.firstHeader(file), "空数据也应写出表头");
         assertEquals(0, ExcelTestSupport.read(file).size());
-        file.delete();
     }
 }
