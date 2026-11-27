@@ -2,11 +2,11 @@ package cn.kennylee.banyan.samples.excel;
 
 import cn.idev.excel.FastExcel;
 import cn.idev.excel.read.listener.PageReadListener;
+import cn.kennylee.banyan.samples.excel.model.OrderRow;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,18 +51,4 @@ final class ExcelTestSupport {
         return rows;
     }
 
-    static File templateWithHeader() throws IOException {
-        File template = File.createTempFile("template-", ".xlsx");
-        try (Workbook workbook = new XSSFWorkbook();
-             FileOutputStream out = new FileOutputStream(template)) {
-            org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet();
-            org.apache.poi.ss.usermodel.Row header = sheet.createRow(0);
-            header.createCell(0).setCellValue("订单号");
-            header.createCell(1).setCellValue("客户");
-            header.createCell(2).setCellValue("金额");
-            header.createCell(3).setCellValue("状态");
-            workbook.write(out);
-        }
-        return template;
-    }
 }

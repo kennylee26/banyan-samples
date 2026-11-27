@@ -1,16 +1,20 @@
-package cn.kennylee.banyan.samples.excel;
+package cn.kennylee.banyan.samples.excel.service;
 
 import cn.kennylee.banyan.excel.exporter.ExcelExportResult;
 import cn.kennylee.banyan.excel.exporter.ExcelExporterBuilder;
 import cn.kennylee.banyan.excel.exporter.ExcelRowWriter;
 import cn.kennylee.banyan.excel.exporter.fastexcel.FastExcelExporters;
+import cn.kennylee.banyan.samples.excel.model.OrderRow;
+import cn.kennylee.banyan.samples.excel.source.GeneratedOrderSource;
+import cn.kennylee.banyan.samples.excel.source.OrderBatchSource;
+import cn.kennylee.banyan.samples.excel.source.OrderCursorSource;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.List;
 
 /**
- * 导出样例服务：把不同导出场景收敛成可读的方法，供测试与演示调用。
+ * 导出样例服务：把不同导出场景收敛成可读的方法，供接口与演示调用。
  *
  * @author kennylee
  * @since 0.1.0
@@ -90,6 +94,18 @@ public class OrderExportService {
     public ExcelExportResult exportWithLimit(List<OrderRow> rows, int maxRecords) {
         return FastExcelExporters.xlsx(new OrderBatchSource(rows), OrderRow.class)
             .maxExportRecords(maxRecords)
+            .export();
+    }
+
+    /**
+     * 大数据量导出：按需生成数据，不驻留全量集合。
+     *
+     * @param rows 总行数
+     * @return 导出结果
+     */
+    public ExcelExportResult exportLarge(int rows) {
+        return FastExcelExporters.xlsx(new GeneratedOrderSource(rows), OrderRow.class)
+            .batchSize(5_000)
             .export();
     }
 

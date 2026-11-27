@@ -1,4 +1,4 @@
-package cn.kennylee.banyan.samples.excel;
+package cn.kennylee.banyan.samples.excel.model;
 
 import cn.idev.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;

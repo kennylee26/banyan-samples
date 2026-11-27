@@ -1,3 +1,6 @@
+server:
+  port: ${SERVER_PORT:0}
+
 # banyan-excel 是纯调用式工具库：不注册 Spring bean、没有自动装配，
 # 也没有任何 banyan.* 配置项。
 #

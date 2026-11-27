@@ -1,7 +1,8 @@
-package cn.kennylee.banyan.samples.excel;
+package cn.kennylee.banyan.samples.excel.source;
 
 import cn.kennylee.banyan.excel.exporter.BatchSource;
 import cn.kennylee.banyan.excel.exporter.ExportCursor;
+import cn.kennylee.banyan.samples.excel.model.OrderRow;
 
 import java.util.ArrayList;
 import java.util.List;

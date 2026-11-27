@@ -1,17 +1,19 @@
 package cn.kennylee.banyan.samples.excel;
 
-import cn.kennylee.banyan.excel.exporter.ExcelExportResult;
-import cn.kennylee.banyan.excel.exporter.fastexcel.FastExcelExporters;
+import cn.kennylee.banyan.samples.excel.support.SampleOrders;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.io.File;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * CSV 样例：纯文本旁路导出，不按 sheet 容量拆分。
+ * CSV 接口样例：单文件下载，不按 sheet 容量拆分。
  *
  * @author kennylee
  * @since 0.1.0
@@ -19,20 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CsvExportSampleTest extends AbstractExcelSampleTest {
 
     @Test
-    @DisplayName("CSV 导出单文件，不按 sheet 容量拆分")
-    void exportsCsv() {
-        // given
-        List<OrderRow> data = SampleOrders.of(100);
-
+    @DisplayName("GET /export/csv 下载单个 CSV 文件")
+    void exportsCsv() throws Exception {
         // when
-        ExcelExportResult result = FastExcelExporters.csv(new OrderBatchSource(data), OrderRow.class)
-            .sheetCapacity(30)
-            .export();
-        keep(result);
+        byte[] body = mockMvc.perform(get("/export/csv").param("rows", "100"))
+            .andExpect(status().isOk())
+            .andExpect(header().string("Content-Disposition", containsString("orders.csv")))
+            .andReturn().getResponse().getContentAsByteArray();
 
         // then
-        assertTrue(result.file().getName().endsWith(".csv"));
-        assertEquals(100, result.totalRecords());
-        assertEquals(data, ExcelTestSupport.read(result.file()), "CSV 不分 sheet，单文件包含全部行");
+        File file = writeTemp(".csv", body);
+        assertEquals(SampleOrders.of(100), ExcelTestSupport.read(file), "CSV 单文件包含全部行");
+        file.delete();
     }
 }

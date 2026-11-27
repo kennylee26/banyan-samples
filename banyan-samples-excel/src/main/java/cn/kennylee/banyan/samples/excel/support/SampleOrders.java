@@ -1,4 +1,6 @@
-package cn.kennylee.banyan.samples.excel;
+package cn.kennylee.banyan.samples.excel.support;
+
+import cn.kennylee.banyan.samples.excel.model.OrderRow;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -6,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * 样例数据工厂，供测试与启动演示复用。
+ * 样例数据工厂，供接口、测试与启动演示复用。
  *
  * @author kennylee
  * @since 0.1.0
