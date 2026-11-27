@@ -13,6 +13,7 @@ Runnable examples and integration tests for [banyan](https://github.com/kennylee
 | [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` in action: header forwarding, logging and traceId propagation |
 | [`banyan-samples-mvc/`](banyan-samples-mvc/README.md) | `banyan-spring-mvc` in action: ordered exception advices, replaceable error response and optional Jackson enhancements |
 | [`banyan-samples-excel/`](banyan-samples-excel/README.md) | `banyan-excel` in action: paginated batch export, templates, automatic sheet splitting and CSV |
+| [`banyan-samples-excel-parser/`](banyan-samples-excel-parser/README.md) | `banyan-excel-parser` in action: upload streaming parse, batch persistence, header aliases, max rows and unordered restore |
 
 ## Conventions
 

@@ -25,6 +25,7 @@
         <module>banyan-samples-feign</module>
         <module>banyan-samples-mvc</module>
         <module>banyan-samples-excel</module>
+        <module>banyan-samples-excel-parser</module>
     </modules>
 
     <properties>

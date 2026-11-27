@@ -13,6 +13,7 @@
 | [`banyan-samples-feign/`](banyan-samples-feign/README.md) | `banyan-spring-feign` 示例：header 转发、日志与 traceId 透传 |
 | [`banyan-samples-mvc/`](banyan-samples-mvc/README.md) | `banyan-spring-mvc` 示例：分级异常 advice、可替换错误响应与可选 Jackson 增强 |
 | [`banyan-samples-excel/`](banyan-samples-excel/README.md) | `banyan-excel` 示例：分页批次导出、模板、自动分 sheet 与 CSV |
+| [`banyan-samples-excel-parser/`](banyan-samples-excel-parser/README.md) | `banyan-excel-parser` 示例：上传流式解析、批量存库、表头别名、最大行数与无序还原 |
 
 ## 约定
 

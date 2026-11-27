@@ -1,0 +1,8 @@
+server:
+  port: ${SERVER_PORT:0}   # 默认 0（随机端口）；需要固定端口用 SERVER_PORT 覆盖
+
+# banyan-excel-parser 是纯调用式工具库：不注册 Spring bean、没有自动装配，
+# 也没有任何 banyan.* 配置项。
+#
+# 批次大小、并发度、在途批次上限、最大行数、sheet 与表头别名都在调用 FastExcelParsers
+# 时显式设置，不走配置文件；完整 API 见 banyan-excel-parser 模块的 README。
